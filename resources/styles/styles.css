@@ -7,3 +7,22 @@
     width: 50%;
 }
 
+.categories_item img {
+    display: block;
+    width: 10%;
+}
+
+.categories_item{
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.categories_item .categories_item_thumb img {
+    border-radius: 4px;
+    margin-bottom: 0px;
+}
+
+
+
