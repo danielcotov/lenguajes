@@ -1,17 +1,8 @@
 <?php
 
-    include 'conexionBD.php';
-    $abrirCon = OpenCon();
+    include 'resources/conexionBD.php';
 
-    if(isset($_POST['btnConsultar']))
-    {
-        $queryVentas = "call ConsultarVentas()";
-        $listaVentas = $abrirCon -> query($queryVentas);
-    }
-
-    
-    
-    CloseCon($abrirCon);
+    CloseCon($conn);
 
 ?>
 
