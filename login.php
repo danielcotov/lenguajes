@@ -39,9 +39,8 @@
 
   <title>Gualmarsh</title>
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/simple-sidebar.css" rel="stylesheet">
-  <link href="css/estilosSitio.css" rel="stylesheet">
   <link rel="stylesheet" href="resources/styles/styles.css">
+  <link rel="stylesheet" href="resources/css/font.css">
 
 </head>
 
@@ -61,20 +60,20 @@
                 <div class="card-body">
                     <form method="post">
                         <fieldset class="form-group">
-                            <label>Username</label>
+                            <label>Correo Electrónico</label>
                             <input type="text"
                                    class="form-control"
                                    name="username" 
                                    required="required">
                         </fieldset>
                         <fieldset class="form-group">
-                            <label>Password</label>
+                            <label>Contraseña</label>
                             <input type="password"
                                    class="form-control"
                                    name="password"
                                    required="required">
                         </fieldset>
-                        <button type="submit" class="btn btn-success" name = "btnLogin" style="background-color: #FFC223; border: #FFC223; color: black">Login</button>
+                        <button type="submit" class="btn btn-success" name = "btnLogin" style="background-color: #FFC223; border: #FFC223; color: black">Iniciar Sesión</button>
                     </form>
                 </div>
             </div>
