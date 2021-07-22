@@ -1,3 +1,32 @@
+<?php
+//Inicio de sesion
+    include 'resources/conexionBD.php';
+    
+    if(isset($_POST['btnRegistrar']))
+    {
+    
+        $sql = "BEGIN INICIO_SESION(:username, :password, :resultado); END;";
+        $parse = oci_parse($conn, $sql);
+        oci_bind_by_name($parse, ':username', $username, 32);
+        oci_bind_by_name($parse, ':password', $password, 32);
+        oci_bind_by_name($parse, ':resultado', $resultado, 32);
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        
+        oci_execute($parse);
+
+        if(!empty($resultado))
+        {
+            header('Location: test.php');
+        }
+        else
+        {
+            echo "<script> loginInvalido=true </script>";
+        }
+        CloseCon($conn);
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,9 +56,10 @@
         </div>
         <br>
         <div class="container col-md-5" style="font-family: 'Bogle';">
+        <p hidden id = "errorLogin" style="color: red;">La combinación de correo/contraseña es incorrecta. Por favor revisar los datos e intentar nuevamente.</p>
             <div class="card">
                 <div class="card-body">
-                    <form action="<%=request.getContextPath()%>/login" method="post">
+                    <form method="post">
                         <fieldset class="form-group">
                             <label>Username</label>
                             <input type="text"
@@ -44,19 +74,21 @@
                                    name="password"
                                    required="required">
                         </fieldset>
-                        <button type="submit" class="btn btn-success" style="background-color: #FFC223; border: #FFC223; color: black">Login</button>
+                        <button type="submit" class="btn btn-success" name = "btnRegistrar" style="background-color: #FFC223; border: #FFC223; color: black">Login</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-  </div>
-
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/funcionesSitio.js"></script>
-
 </form>
 </body>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    var loginInvalido;
+    if(loginInvalido==true)
+    {
+        document.getElementById('errorLogin').removeAttribute("hidden");
+    }
+</script>
 </html>
