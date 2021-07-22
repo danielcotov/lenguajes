@@ -2,7 +2,7 @@
 //Inicio de sesion
     include 'resources/conexionBD.php';
     
-    if(isset($_POST['btnRegistrar']))
+    if(isset($_POST['btnLogin']))
     {
     
         $sql = "BEGIN INICIO_SESION(:username, :password, :resultado); END;";
@@ -74,7 +74,7 @@
                                    name="password"
                                    required="required">
                         </fieldset>
-                        <button type="submit" class="btn btn-success" name = "btnRegistrar" style="background-color: #FFC223; border: #FFC223; color: black">Login</button>
+                        <button type="submit" class="btn btn-success" name = "btnLogin" style="background-color: #FFC223; border: #FFC223; color: black">Login</button>
                     </form>
                 </div>
             </div>
