@@ -1,5 +1,4 @@
 <?php
-//Inicio de sesion
     include 'resources/conexionBD.php';
     
     if(isset($_POST['btnLogin']))
@@ -15,11 +14,11 @@
         
         oci_execute($parse);
 
-        if(!empty($resultado))
+        if($resultado == 1)
         {
             header('Location: index.php');
         }
-        else
+        else if($resultado == 0)
         {
             echo "<script> loginInvalido=true </script>";
         }

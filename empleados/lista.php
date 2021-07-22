@@ -1,3 +1,14 @@
+<?php
+    include '../resources/conexionBD.php';
+    
+    $sql = "BEGIN LISTAR_USUARIOS(:cur); END;";
+    $parse = oci_parse($conn, $sql);
+    $cur = oci_new_cursor($conn);
+    oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+    
+    oci_execute($parse);
+    oci_execute($cur);
+?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -44,39 +55,49 @@
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Employee List</h3>
+                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista Empleados</h3>
                         <hr style="height: 5px; background-color: #007DC6;">
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/employee-new" id="add-employee" class="btn btn-success">Add Employee</a>  
+                            <a href="<%=request.getContextPath()%>/employee-new" id="add-employee" class="btn btn-success">Agregar Usuario</a>  
                         </div>
                         <br>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>DNI</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Access Level</th>
-                                    <th>Actions</th>
+                                    <th>NOMBRE</th>
+                                    <th>APELLIDO</th>
+                                    <th>CORREO</th>
+                                    <th>TELÉFONO</th>
+                                    <th>CANTÓN</th>
+                                    <th>PROVINCIA</th>
+                                    <th>GÉNERO</th>
+                                    <th>FECHA NACIMIENTO</th>
+                                    <th>FECHA INGRESO</th>
+                                    <th>SALARIO</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="employee" items="${listEmployee}">
-                                    <tr>
-                                        <td><c:out value="${employee.id}" /></td>
-                                        <td><c:out value="${employee.name}" /></td>
-                                        <td><c:out value="${employee.dni}" /></td>
-                                        <td><c:out value="${employee.username}" /></td>
-                                        <td><c:out value="${employee.email}" /></td>
-                                        <td><c:out value="${employee.phone}" /></td>
-                                        <td><c:out value="${employee.access_level}" /></td>
-                                        <td><a href="employee-edit?id=<c:out value='${employee.id}' />">Edit</a>
-                                            &nbsp;&nbsp;&nbsp;&nbsp; <a
-                                                href="employee-delete?id=<c:out value='${employee.id}' />">Delete</a></td>
-                                    </tr>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['NOMBRE'] .'</td>';
+                                        echo '<td>'. $row['APELLIDO'] .'</td>';
+                                        echo '<td>'. $row['CORREO'] .'</td>';
+                                        echo '<td>'. $row['TELEFONO'] .'</td>';
+                                        echo '<td>'. $row['CANTON'] .'</td>';
+                                        echo '<td>'. $row['PROVINCIA'] .'</td>';
+                                        echo '<td>'. $row['GENERO'] .'</td>';
+                                        echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
+                                        echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
+                                        echo '<td>'. $row['SALARIO'] .'</td>';
+                                        echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                        echo '</tr>';
+                                    
+                                    }
+                                                            
+                                ?>
                                 </c:forEach>
                             </tbody>
                         </table>
