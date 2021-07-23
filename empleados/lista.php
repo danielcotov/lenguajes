@@ -1,6 +1,6 @@
 <?php
     include '../resources/conexionBD.php';
-    
+
     $sql = "BEGIN LISTAR_USUARIOS(:cur); END;";
     $parse = oci_parse($conn, $sql);
     $cur = oci_new_cursor($conn);
@@ -8,6 +8,7 @@
     
     oci_execute($parse);
     oci_execute($cur);
+
 ?>
 <html>
     <head>
@@ -58,7 +59,7 @@
                         <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista Empleados</h3>
                         <hr style="height: 5px; background-color: #007DC6;">
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/employee-new" id="add-employee" class="btn btn-success">Agregar Usuario</a>  
+                            <a href="formulario.php" id="add-employee" class="btn btn-success">Agregar Usuario</a>  
                         </div>
                         <br>
                         <table class="table table-bordered">
@@ -68,6 +69,7 @@
                                     <th>APELLIDO</th>
                                     <th>CORREO</th>
                                     <th>TELÉFONO</th>
+                                    <th>DIRECCIÓN</th>
                                     <th>CANTÓN</th>
                                     <th>PROVINCIA</th>
                                     <th>GÉNERO</th>
@@ -82,17 +84,18 @@
                                     while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
                                     {
                                         echo '<tr>';
-                                        echo '<td>'. $row['NOMBRE'] .'</td>';
+                                        echo '<td name="nombre'.$row["ID"].'">'. $row['NOMBRE'] .'</td>';
                                         echo '<td>'. $row['APELLIDO'] .'</td>';
                                         echo '<td>'. $row['CORREO'] .'</td>';
                                         echo '<td>'. $row['TELEFONO'] .'</td>';
+                                        echo '<td>'. $row['DIRECCION'] .'</td>';
                                         echo '<td>'. $row['CANTON'] .'</td>';
                                         echo '<td>'. $row['PROVINCIA'] .'</td>';
                                         echo '<td>'. $row['GENERO'] .'</td>';
                                         echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
                                         echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
                                         echo '<td>'. $row['SALARIO'] .'</td>';
-                                        echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                        echo '<td><a name = "btnActualizar" href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
                                         echo '</tr>';
                                     
                                     }
