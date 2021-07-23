@@ -1,4 +1,14 @@
-<html>
+<?php
+    include '../resources/conexionBD.php';
+    
+    $sql = "BEGIN LISTAR_CLIENTES(:cur); END;";
+    $parse = oci_parse($conn, $sql);
+    $cur = oci_new_cursor($conn);
+    oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+    
+    oci_execute($parse);
+    oci_execute($cur);
+?><html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Gualmarsh / Clientes</title>
@@ -53,30 +63,34 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>City</th>
-                                    <th>CC Number</th>
-                                    <th>Actions</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Direccion</th>
+                                    <th>Canton</th>
+                                    <th>Correo</th>
+                                    <th>Telefono</th>
+                                    <th>Genero</th>
+                                    <th>Fecha de Nacimiento</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="customer" items="${listCustomer}">
-                                    <tr>
-                                        <td><c:out value="${customer.id}" /></td>
-                                        <td><c:out value="${customer.name}" /></td>
-                                        <td><c:out value="${customer.email}" /></td>
-                                        <td><c:out value="${customer.phone}" /></td>
-                                        <td><c:out value="${customer.address}" /></td>
-                                        <td><c:out value="${customer.city_region}" /></td>
-                                        <td><c:out value="${customer.cc_number}" /></td>
-                                        <td><a href="customer-edit?id=<c:out value='${customer.id}' />">Edit</a>
-                                            &nbsp;&nbsp;&nbsp;&nbsp; <a
-                                                href="customer-delete?id=<c:out value='${customer.id}' />">Delete</a></td>
-                                    </tr>
+                                <?php
+                                        while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                        {
+                                            echo '<tr>';
+                                            echo '<td>'. $row['NOMBRE'] .'</td>';
+                                            echo '<td>'. $row['APELLIDO'] .'</td>';
+                                            echo '<td>'. $row['DIRECCION'] .'</td>';
+                                            echo '<td>'. $row['CANTON'] .'</td>';
+                                            echo '<td>'. $row['CORREO'] .'</td>';
+                                            echo '<td>'. $row['TELEFONO'] .'</td>';
+                                            echo '<td>'. $row['GENERO'] .'</td>';
+                                            echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
+                                            echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                            echo '</tr>';
+                                        }               
+                                    ?>
                                 </c:forEach>
                             </tbody>
                         </table>
