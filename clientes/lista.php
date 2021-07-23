@@ -8,7 +8,8 @@
     
     oci_execute($parse);
     oci_execute($cur);
-?><html>
+?>
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Gualmarsh / Clientes</title>
@@ -79,6 +80,7 @@
                                         while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
                                         {
                                             echo '<tr>';
+                                            echo '<td>'. $row['ID'] .'</td>';
                                             echo '<td>'. $row['NOMBRE'] .'</td>';
                                             echo '<td>'. $row['APELLIDO'] .'</td>';
                                             echo '<td>'. $row['DIRECCION'] .'</td>';

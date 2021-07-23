@@ -1,3 +1,14 @@
+<?php
+    include '../resources/conexionBD.php';
+    
+    $sql = "BEGIN LISTAR_PRODUCTOS(:cur); END;";
+    $parse = oci_parse($conn, $sql);
+    $cur = oci_new_cursor($conn);
+    oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+    
+    oci_execute($parse);
+    oci_execute($cur);
+?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -55,27 +66,29 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Description</th>
-                                    <th>Last Update</th>
-                                    <th>Category</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Descripcion</th>
+                                    <th>Cantidad</th>
+                                    <th>Categoria</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="product" items="${listProduct}">
-                                    <tr>
-                                        <td><c:out value="${product.id}" /></td>
-                                        <td><c:out value="${product.name}" /></td>
-                                        <td><c:out value="${product.price}" /></td>
-                                        <td><c:out value="${product.description}" /></td>
-                                        <td><c:out value="${product.last_update}" /></td>
-                                        <td><c:out value="${product.category}" /></td>
-                                        <td><a href="product-edit?id=<c:out value='${product.id}' />">Edit</a>
-                                            &nbsp;&nbsp;&nbsp;&nbsp; <a
-                                                href="product-delete?id=<c:out value='${product.id}' />">Delete</a></td>
-                                    </tr>
+                            <?php
+                                        while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                        {
+                                            echo '<tr>';
+                                            echo '<td>'. $row['ID'] .'</td>';
+                                            echo '<td>'. $row['NOMBRE'] .'</td>';
+                                            echo '<td>'. $row['PRECIO'] .'</td>';
+                                            echo '<td>'. $row['DESCRIPCION'] .'</td>';
+                                            echo '<td>'. $row['CANTIDAD'] .'</td>';
+                                            echo '<td>'. $row['CATEGORIA'] .'</td>';
+                                            echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                            echo '</tr>';
+                                        }               
+                                    ?>
                                 </c:forEach>
                             </tbody>
                         </table>
