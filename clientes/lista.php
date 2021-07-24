@@ -64,6 +64,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Direccion</th>
