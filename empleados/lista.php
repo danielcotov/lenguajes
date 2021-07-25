@@ -8,6 +8,8 @@
     
     oci_execute($parse);
     oci_execute($cur);
+    oci_free_statement($parse);
+    oci_close($conn);
 
 ?>
 <html>
@@ -72,6 +74,7 @@
                                     <th>DIRECCIÓN</th>
                                     <th>CANTÓN</th>
                                     <th>PROVINCIA</th>
+                                    <th>PAIS</th>
                                     <th>GÉNERO</th>
                                     <th>FECHA NACIMIENTO</th>
                                     <th>FECHA INGRESO</th>
@@ -91,6 +94,7 @@
                                         echo '<td>'. $row['DIRECCION'] .'</td>';
                                         echo '<td>'. $row['CANTON'] .'</td>';
                                         echo '<td>'. $row['PROVINCIA'] .'</td>';
+                                        echo '<td>'. $row['PAIS'] .'</td>';
                                         echo '<td>'. $row['GENERO'] .'</td>';
                                         echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
                                         echo '<td>'. $row['FECHA_INGRESO'] .'</td>';

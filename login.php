@@ -13,16 +13,17 @@
         $password = $_POST['password'];
         
         oci_execute($parse);
-
+        oci_free_statement($parse);
+        oci_close($conn);
         if($resultado == 1)
         {
             header('Location: index.php');
         }
         else if($resultado == 0)
-        {
+        {   
             echo "<script> loginInvalido=true </script>";
         }
-        CloseCon($conn);
+        
     }
 
 ?>

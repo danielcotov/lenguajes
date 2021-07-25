@@ -1,34 +1,61 @@
 <?php
     include '../resources/conexionBD.php';
     $sql = "BEGIN LISTAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
-                                 :telefono, :direccion, :canton, :provincia, :genero, 
+                                 :telefono, :direccion, :canton, :provincia, :pais, :genero, 
                                  :fecha_nacimiento, :fecha_ingreso, :salario); END;";
     $parse = oci_parse($conn, $sql);
     $bindArray = array(":id"=>$_GET['id'],":nombre"=>"", ":apellido"=>"", 
                         ":correo"=>"", ":contrasena"=>"", ":telefono"=>"", 
-                        ":direccion"=>"", ":canton"=>"", ":provincia"=>"", 
-                        ":genero"=>"", ":fecha_nacimiento"=>"", ":fecha_ingreso"=>"", 
-                        ":salario"=>"");
+                        ":direccion"=>"", ":canton"=>"", ":provincia"=>"",
+                        ":pais"=>"",":genero"=>"", ":fecha_nacimiento"=>"", 
+                        ":fecha_ingreso"=>"", ":salario"=>"");
     foreach ($bindArray as $key => $val) {
         oci_bind_by_name($parse, $key, $bindArray[$key], 32);
     }
     oci_execute($parse);
+    oci_free_statement($parse);
+    
     if(isset($_POST['btnGuardar']))   
     {
-        $sqlUpdate = "BEGIN ACTUALIZAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
-                                        :telefono, :direccion, :genero, :fecha_nacimiento, :fecha_ingreso,
-                                        :salario); END;";
-        $parseUpdate = oci_parse($conn, $sqlUpdate);
-        $bindArrayUpdate = array(":id"=>$_GET['id'],":nombre"=>$_POST['nombre'], ":apellido"=>$_POST['apellido'], 
-        ":correo"=>$_POST['correo'], ":contrasena"=>$_POST['contrasena'], ":telefono"=>$_POST['telefono'], 
-        ":direccion"=>$_POST['direccion'],
-        ":genero"=>$_POST['genero'],":fecha_nacimiento"=>$_POST['fecha_nacimiento'], 
-        ":fecha_ingreso"=>$_POST['fecha_nacimiento'], ":salario"=>$_POST['salario']);
-        foreach ($bindArrayUpdate as $key => $val) {
-            oci_bind_by_name($parse, $key, $bindArrayUpdate[$key], 32);
+        if ($_GET['id'] !=null)
+        {
+            $sqlUpdate = "BEGIN ACTUALIZAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
+                                            :telefono, :direccion, :genero, :fecha_nacimiento, :fecha_ingreso,
+                                            :salario); END;";
+            $parseUpdate = oci_parse($conn, $sqlUpdate);
+            $bindArrayUpdate = array(":id"=>$_GET['id'],":nombre"=>$_POST['nombre'], ":apellido"=>$_POST['apellido'], 
+            ":correo"=>$_POST['correo'], ":contrasena"=>$_POST['contrasena'], ":telefono"=>$_POST['telefono'], 
+            ":direccion"=>$_POST['direccion'],
+            ":genero"=>$_POST['genero'],":fecha_nacimiento"=>$_POST['fechaNacimiento'], 
+            ":fecha_ingreso"=>$_POST['fechaIngreso'], ":salario"=>$_POST['salario']);
+            foreach ($bindArrayUpdate as $key => $val) {
+                oci_bind_by_name($parseUpdate, $key, $bindArrayUpdate[$key], 32);
+            }
+            oci_execute($parseUpdate);
+            oci_free_statement($parseUpdate);
+            oci_close($conn);
+            header('Location: lista.php');
         }
-        oci_execute($parseUpdate);
-
+        else
+        {
+            $sqlInsert = "BEGIN INSERTAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
+                                            :telefono, :direccion, :canton, :provincia, :pais, :genero, 
+                                            :fecha_nacimiento, :fecha_ingreso, :salario); END;";
+            $parseInsert = oci_parse($conn, $sqlInsert);
+            $bindArrayInsert = array(":id"=>$_POST['id_usuario'],":nombre"=>$_POST['nombre'], ":apellido"=>$_POST['apellido'], 
+            ":correo"=>$_POST['correo'], ":contrasena"=>$_POST['contrasena'], ":telefono"=>$_POST['telefono'], 
+            ":direccion"=>$_POST['direccion'], ":canton"=>$_POST['canton'], ":provincia"=>$_POST['provincia'], ":pais"=>$_POST['pais'],
+            ":genero"=>$_POST['genero'],":fecha_nacimiento"=>$_POST['fechaNacimiento'], 
+            ":fecha_ingreso"=>$_POST['fechaIngreso'], ":salario"=>$_POST['salario']);
+            foreach ($bindArrayInsert as $key => $val) {
+                oci_bind_by_name($parseInsert, $key, $bindArrayInsert[$key], 32);
+            }
+            var_dump($bindArrayInsert);
+            oci_execute($parseInsert);
+            oci_free_statement($parseInsert);
+            oci_close($conn);
+            header('Location: lista.php');
+        }
     }
 ?>
 <html>
@@ -108,14 +135,24 @@
                             <?php
                                 if ($_GET['id'] ==null)
                                 {
-                            ?>  
-                                <fieldset class="form-group">
-                                <label>ID Empleado</label>
-                                    <input type="text"
-                                    value="" class="form-control"
-                                    name="id" required="required">
+                        ?>  
+                            <fieldset class="form-group">
+                            <label>ID Empleado</label>
+                                <input readonly type="text"
+                                    value="<?php
+                                        $sqlCount = "BEGIN :result := CANTIDAD_USUARIOS; END;";
+                                        $parseCount = oci_parse($conn, $sqlCount);
+                                        oci_bind_by_name($parseCount, ':result', $result, 32);
+                                        
+                                        oci_execute($parseCount);
+                                        echo($result + 1);
+                                        oci_free_statement($parseCount);
+                                        oci_close($conn);
+
+                                    ?>" class="form-control"
+                                    name="id_usuario" required="required">
                             </fieldset>
-                            <?php    
+                            <?php  
                                 }
                             ?>
                             <fieldset class="form-group">
@@ -140,11 +177,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":apellido"].'"';
+                                        echo 'value="'.$bindArray[":apellido"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
@@ -156,11 +193,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":correo"].'"';
+                                        echo 'value="'.$bindArray[":correo"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
@@ -172,11 +209,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":contrasena"].'"';
+                                        echo 'value="'.$bindArray[":contrasena"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                         class="form-control"
@@ -188,11 +225,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":telefono"].'"';
+                                        echo 'value="'.$bindArray[":telefono"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
@@ -204,15 +241,15 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":direccion"].'"';
+                                        echo 'value="'.$bindArray[":direccion"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
-                                    name="telefono">
+                                    name="direccion">
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>Cantón</label>
@@ -220,11 +257,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":canton"].'"';
+                                        echo 'value="'.$bindArray[":canton"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
@@ -236,15 +273,48 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":provincia"].'"';
+                                        echo 'value="'.$bindArray[":provincia"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
                                     name="provincia" required="required">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>País</label> 
+                                <input type="text"
+                                <?php
+                                    if ($_GET['id'] !=null)
+                                    {
+                                        echo 'value="'.$bindArray[":pais"].'"';
+                                    }
+                                    else
+                                    {
+                                        echo 'value=""';
+                                    }
+                                ?> 
+                                    class="form-control"
+                                    name="pais" required="required">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>Género</label> 
+                                <input type="text"
+                                <?php
+                                    if ($_GET['id'] !=null)
+                                    {
+                                        $no_spaces = str_replace(' ', '', $bindArray[":genero"]);
+                                        echo 'value="'.$no_spaces.'"';
+                                    }
+                                    else
+                                    {
+                                        echo 'value=""';
+                                    }
+                                ?> 
+                                    class="form-control"
+                                    name="genero" required="required">
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>Fecha Nacimiento</label> 
@@ -252,11 +322,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":fecha_nacimiento"].'"';
+                                        echo 'value="'.$bindArray[":fecha_nacimiento"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
@@ -268,11 +338,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":fecha_ingreso"].'"';
+                                        echo 'value="'.$bindArray[":fecha_ingreso"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
@@ -284,11 +354,11 @@
                                 <?php
                                     if ($_GET['id'] !=null)
                                     {
-                                    echo 'value="'.$bindArray[":salario"].'"';
+                                        echo 'value="'.$bindArray[":salario"].'"';
                                     }
                                     else
                                     {
-                                    echo 'value=""';
+                                        echo 'value=""';
                                     }
                                 ?> 
                                     class="form-control"
