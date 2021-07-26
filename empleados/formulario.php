@@ -20,12 +20,34 @@
         if ($_GET['id'] !=null)
         {
             $sqlUpdate = "BEGIN ACTUALIZAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
-                                            :telefono, :direccion, :genero, :fecha_nacimiento, :fecha_ingreso,
+                                            :telefono, :direccion, :canton, :provincia, :pais, 
+                                            :genero, :fecha_nacimiento, :fecha_ingreso,
                                             :salario); END;";
             $parseUpdate = oci_parse($conn, $sqlUpdate);
+            if ($_POST['pais'] == 0 ){
+                $bindPais = $_POST['otro_pais'];
+            }
+            else
+            {
+                $bindPais = $_POST['pais'];
+            }
+            if ($_POST['provincia'] == 0 ){
+                $bindProvincia = $_POST['otra_provincia'];
+            }
+            else
+            {
+                $bindProvincia = $_POST['provincia'];
+            }
+            if ($_POST['canton'] == 0 ){
+                $bindCanton = $_POST['otro_canton'];
+            }
+            else
+            {
+                $bindCanton = $_POST['canton'];
+            }
             $bindArrayUpdate = array(":id"=>$_GET['id'],":nombre"=>$_POST['nombre'], ":apellido"=>$_POST['apellido'], 
             ":correo"=>$_POST['correo'], ":contrasena"=>$_POST['contrasena'], ":telefono"=>$_POST['telefono'], 
-            ":direccion"=>$_POST['direccion'],
+            ":direccion"=>$_POST['direccion'], ":canton"=>$bindCanton, ":provincia"=>$bindProvincia, ":pais"=>$bindPais,
             ":genero"=>$_POST['genero'],":fecha_nacimiento"=>$_POST['fechaNacimiento'], 
             ":fecha_ingreso"=>$_POST['fechaIngreso'], ":salario"=>$_POST['salario']);
             foreach ($bindArrayUpdate as $key => $val) {
@@ -42,15 +64,36 @@
                                             :telefono, :direccion, :canton, :provincia, :pais, :genero, 
                                             :fecha_nacimiento, :fecha_ingreso, :salario); END;";
             $parseInsert = oci_parse($conn, $sqlInsert);
+            if ($_POST['pais'] == 0 ){
+                $bindPais = $_POST['otro_pais'];
+            }
+            else
+            {
+                $bindPais = $_POST['pais'];
+            }
+            if ($_POST['provincia'] == 0 ){
+                $bindProvincia = $_POST['otra_provincia'];
+            }
+            else
+            {
+                $bindProvincia = $_POST['provincia'];
+            }
+            if ($_POST['canton'] == 0 ){
+                $bindCanton = $_POST['otro_canton'];
+            }
+            else
+            {
+                $bindCanton = $_POST['canton'];
+            }
             $bindArrayInsert = array(":id"=>$_POST['id_usuario'],":nombre"=>$_POST['nombre'], ":apellido"=>$_POST['apellido'], 
             ":correo"=>$_POST['correo'], ":contrasena"=>$_POST['contrasena'], ":telefono"=>$_POST['telefono'], 
-            ":direccion"=>$_POST['direccion'], ":canton"=>$_POST['canton'], ":provincia"=>$_POST['provincia'], ":pais"=>$_POST['pais'],
+            ":direccion"=>$_POST['direccion'], ":canton"=>$bindCanton, ":provincia"=>$bindProvincia, ":pais"=>$bindPais,
             ":genero"=>$_POST['genero'],":fecha_nacimiento"=>$_POST['fechaNacimiento'], 
             ":fecha_ingreso"=>$_POST['fechaIngreso'], ":salario"=>$_POST['salario']);
             foreach ($bindArrayInsert as $key => $val) {
                 oci_bind_by_name($parseInsert, $key, $bindArrayInsert[$key], 32);
             }
-            var_dump($bindArrayInsert);
+            
             oci_execute($parseInsert);
             oci_free_statement($parseInsert);
             oci_close($conn);
@@ -80,6 +123,9 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="../resources/css/style.css">
         <link rel="stylesheet" href="../resources/css/font.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
     <body>
     <body>
@@ -251,67 +297,6 @@
                                     name="direccion">
                             </fieldset>
                             <fieldset class="form-group">
-                                <label>Cantón</label>
-                                <select name ="canton" id="canton" class="form-control">
-                                <?php
-                                    $sqlCanton = "BEGIN LISTAR_CANTONES(:cur); END;";
-                                    $parseCanton = oci_parse($conn, $sqlCanton);
-                                    $cur = oci_new_cursor($conn);
-                                    oci_bind_by_name($parseCanton, ':cur', $cur, -1, OCI_B_CURSOR);
-                                    
-                                    oci_execute($parseCanton);
-                                    oci_execute($cur);
-                                    oci_free_statement($parseCanton);
-                                    if ($_GET['id'] !=null)
-                                    {
-                                        echo '<option value="'.$bindArray[":canton"].'">'.$bindArray[":canton"].'</option>';
-                                    }
-                                    else
-                                    {
-                                        echo '<option value="default">Seleccione un cantón</option>';
-                                    }
-                                    
-                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
-                                    {
-                                        if (($bindArray[":canton"]!=$row["NOMBRE"]))
-                                        {
-                                            echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
-                                        }
-                                    }
-                                ?>
-                                </select> 
-                            </fieldset>
-                            <fieldset class="form-group">
-                                <label>Provincia</label> 
-                                <select name ="provincia" id="provincia" class="form-control">
-                                <?php
-                                    $sqlProv = "BEGIN LISTAR_PROVINCIAS(:cur); END;";
-                                    $parseProv = oci_parse($conn, $sqlProv);
-                                    $cur = oci_new_cursor($conn);
-                                    oci_bind_by_name($parseProv, ':cur', $cur, -1, OCI_B_CURSOR);
-                                    
-                                    oci_execute($parseProv);
-                                    oci_execute($cur);
-                                    oci_free_statement($parseProv);
-                                    if ($_GET['id'] !=null)
-                                    {
-                                        echo '<option value="'.$bindArray[":provincia"].'">'.$bindArray[":provincia"].'</option>';
-                                    }
-                                    else
-                                    {
-                                        echo '<option value="default">Seleccione una provincia</option>';
-                                    }
-                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
-                                    {
-                                        if ($bindArray[":provincia"]!=$row["NOMBRE"])
-                                        {
-                                            echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
-                                        }
-                                    }
-                                ?>
-                                </select> 
-                            </fieldset>
-                            <fieldset class="form-group">
                                 <label>País</label> 
                                 <select name ="pais" id="pais" class="form-control">
                                 <?php
@@ -338,8 +323,39 @@
                                             echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
                                         }
                                     }
+                                    echo '<option value="0">Otro...</option>';
                                 ?> 
                                 </select>
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <input id="otro_pais" type="text" style="display: none;"
+                                    value="" class="form-control"
+                                    name="otro_pais">
+                            <fieldset class="form-group">
+                                <label>Provincia</label>
+                                    <select disabled name ="provincia" id="provincia" class="form-control">
+                                    <?php
+                                        include 'provincias.php';
+                                    ?>
+                                    </select> 
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <input id="otra_provincia" type="text" style="display: none;"
+                                    value="" class="form-control"
+                                    name="otra_provincia">
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <label>Cantón</label>
+                                <select disabled name ="canton" id="canton" class="form-control">
+                                <?php
+                                    include 'cantones.php';
+                                ?>
+                                </select> 
+                            </fieldset>
+                            <fieldset class="form-group">
+                                <input id="otro_canton" type="text" style="display: none;"
+                                    value="" class="form-control"
+                                    name="otro_canton">
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>Género</label> 
@@ -412,5 +428,45 @@
                 </div>
             </div>
         </div>
+        <script>
+            $("#pais").change(function(){
+                if($(this).val() == 0){
+                    $("#otro_pais").show();
+                }else{
+                    $("#otro_pais").hide();
+                }
+                var pais = $("#pais").val();
+                $.post("provincias.php", { pais: pais}, 
+                function(data){
+                    $("#provincia").html( data );
+                    $("#provincia").removeAttr("disabled");
+                });
+
+            });
+            $("#canton").change(function(){
+                if($(this).val() == 0){
+                    $("#otro_canton").show();
+                }else{
+                    $("#otro_canton").hide();
+                }
+
+            });
+            $("#provincia").change(function(){
+                if($(this).val() == 0){
+                    $("#otra_provincia").show();
+                }else{
+                    $("#otra_provincia").hide();
+                }
+                var provincia = $("#provincia").val();
+                $.post("cantones.php", { provincia: provincia}, 
+                function(data){
+                    $("#canton").html( data );
+                    $("#canton").removeAttr("disabled");
+                });
+
+            });
+            
+     
+        </script>
     </body>
 </html>
