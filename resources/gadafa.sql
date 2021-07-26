@@ -54,8 +54,8 @@ BEGIN
     OPEN CUR FOR SELECT C.ID_CLIENTE ID,
                 C.NOMBRE NOMBRE,
                 C.APELLIDO APELLIDO,
-                C.DIRECCION DIRECCION,
-                B.NOMBRE CANTON,
+                C.DIRECCION || ' ' ||
+                B.NOMBRE DIRECCION,
                 C.CORREO CORREO,
                 C.TELEFONO TELEFONO,
                 C.GENERO GENERO,
