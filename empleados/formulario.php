@@ -147,7 +147,6 @@
                                         oci_execute($parseCount);
                                         echo($result + 1);
                                         oci_free_statement($parseCount);
-                                        oci_close($conn);
 
                                     ?>" class="form-control"
                                     name="id_usuario" required="required">
@@ -253,51 +252,94 @@
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>Cantón</label>
-                                <input type="text"
+                                <select name ="canton" id="canton" class="form-control">
                                 <?php
+                                    $sqlCanton = "BEGIN LISTAR_CANTONES(:cur); END;";
+                                    $parseCanton = oci_parse($conn, $sqlCanton);
+                                    $cur = oci_new_cursor($conn);
+                                    oci_bind_by_name($parseCanton, ':cur', $cur, -1, OCI_B_CURSOR);
+                                    
+                                    oci_execute($parseCanton);
+                                    oci_execute($cur);
+                                    oci_free_statement($parseCanton);
                                     if ($_GET['id'] !=null)
                                     {
-                                        echo 'value="'.$bindArray[":canton"].'"';
+                                        echo '<option value="'.$bindArray[":canton"].'">'.$bindArray[":canton"].'</option>';
                                     }
                                     else
                                     {
-                                        echo 'value=""';
+                                        echo '<option value="default">Seleccione un cantón</option>';
                                     }
-                                ?> 
-                                    class="form-control"
-                                    name="canton" required="required">
+                                    
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        if (($bindArray[":canton"]!=$row["NOMBRE"]))
+                                        {
+                                            echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
+                                        }
+                                    }
+                                ?>
+                                </select> 
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>Provincia</label> 
-                                <input type="text"
+                                <select name ="provincia" id="provincia" class="form-control">
                                 <?php
+                                    $sqlProv = "BEGIN LISTAR_PROVINCIAS(:cur); END;";
+                                    $parseProv = oci_parse($conn, $sqlProv);
+                                    $cur = oci_new_cursor($conn);
+                                    oci_bind_by_name($parseProv, ':cur', $cur, -1, OCI_B_CURSOR);
+                                    
+                                    oci_execute($parseProv);
+                                    oci_execute($cur);
+                                    oci_free_statement($parseProv);
                                     if ($_GET['id'] !=null)
                                     {
-                                        echo 'value="'.$bindArray[":provincia"].'"';
+                                        echo '<option value="'.$bindArray[":provincia"].'">'.$bindArray[":provincia"].'</option>';
                                     }
                                     else
                                     {
-                                        echo 'value=""';
+                                        echo '<option value="default">Seleccione una provincia</option>';
                                     }
-                                ?> 
-                                    class="form-control"
-                                    name="provincia" required="required">
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        if ($bindArray[":provincia"]!=$row["NOMBRE"])
+                                        {
+                                            echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
+                                        }
+                                    }
+                                ?>
+                                </select> 
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>País</label> 
-                                <input type="text"
+                                <select name ="pais" id="pais" class="form-control">
                                 <?php
+                                    $sqlPaises = "BEGIN LISTAR_PAISES(:cur); END;";
+                                    $parsePaises = oci_parse($conn, $sqlPaises);
+                                    $cur = oci_new_cursor($conn);
+                                    oci_bind_by_name($parsePaises, ':cur', $cur, -1, OCI_B_CURSOR);
+                                    
+                                    oci_execute($parsePaises);
+                                    oci_execute($cur);
+                                    oci_free_statement($parsePaises);
                                     if ($_GET['id'] !=null)
                                     {
-                                        echo 'value="'.$bindArray[":pais"].'"';
+                                        echo '<option value="'.$bindArray[":pais"].'">'.$bindArray[":pais"].'</option>';
                                     }
                                     else
                                     {
-                                        echo 'value=""';
+                                        echo '<option value="default">Seleccione un país</option>';
+                                    }
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        if ($bindArray[":pais"]!=$row["NOMBRE"])
+                                        {
+                                            echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
+                                        }
                                     }
                                 ?> 
-                                    class="form-control"
-                                    name="pais" required="required">
+                                </select>
                             </fieldset>
                             <fieldset class="form-group">
                                 <label>Género</label> 
