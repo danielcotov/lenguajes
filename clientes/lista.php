@@ -8,6 +8,15 @@
     
     oci_execute($parse);
     oci_execute($cur);
+
+    // Cantidad total de Clientes
+    $sqlFClientes = "SELECT CANTIDAD_CLIENTES FROM DUAL";
+    $sqlLisClientes = oci_parse($conn, $sqlFClientes);
+
+    oci_execute($sqlLisClientes);
+
+
+
 ?>
 <html>
     <head>
@@ -58,9 +67,39 @@
                         <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Customer List</h3>
                         <hr style="height: 5px; background-color: #007DC6;">
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/customer-new" class="btn btn-success">Add Customer</a>                    
+                            <a href="<%=request.getContextPath()%>/customer-new" class="btn btn-success">Agregar Cliente</a>                    
                         </div>
                         <br>
+                        <div class="container">
+                            <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button" 
+                                id="dropdownMenuButton" data-toggle="dropdown"
+                                 aria-haspopup="true" aria-expanded="false">
+                                 Hola
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Cantidad Total de Clientes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $row = oci_fetch_object($sqlLisClientes);
+                                    $row->CANTIDAD_CLIENTES;
+                                    echo '<tr>';
+                                    echo '<td>'. $row->CANTIDAD_CLIENTES . "<br>\n";
+                                    echo '</tr>';
+                                    ?>
+                            </tbody>
+                        </table>
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
