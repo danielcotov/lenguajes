@@ -414,3 +414,6 @@ BEGIN
     WHERE NOMBRE = VCANTON;
  RETURN VID;
 END;
+
+
+--./LDLIB/exp export/export FILE='/home/oracle/exports/gadafa.dmp' LOG='/home/oracle/exports/gadafa.txt' OWNER=GADAFA
