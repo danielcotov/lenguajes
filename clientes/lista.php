@@ -28,38 +28,65 @@
         <link rel="stylesheet" href="../resources/css/style.css">
         <link rel="stylesheet" href="../resources/css/font.css">
         <style>
+            .dropdown {
+            position: relative;
+            display: inline-block;
+            }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+            .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
+            .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+            .dropdown-content a:hover {background-color: #007bff;}
 
-.dropdown-content a:hover {background-color: #007bff;}
+            .dropdown:hover .dropdown-content {display: block;}
 
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #007bff;}
-</style>
+            .dropdown:hover .dropbtn {background-color: #007bff;}
+        </style>
     </head>
     <body>
         <div class="wrapper d-flex align-items-stretch" style="font-family: 'Bogle';">
-        <?php include ("../resources/common/navbar.php"); ?>
+        <nav id="sidebar">
+                <div class="custom-menu">
+                </div>
+                <div class="p-4">
+                    <img src="../resources/images/logo.png" width="275" height="65" alt="Logo"/> 
+                    <ul class="list-unstyled components mb-5">
+                        <li>
+                            <a href="../index.php"><span class="fa fa-home mr-3"></span> Inicio</a>
+                        </li>
+                        <li>
+                            <a href="../empleados/lista.php"><span class="fa fa-bar-chart mr-3"></span> Empleados</a>
+                        </li>
+                        <li>
+                            <a href="../productos/lista.php"><span class="fa fa-shopping-cart mr-3"></span> Productos</a>
+                        </li>
+                        <li class="active">
+                            <a href="lista.php"><span class="fa fa-users mr-3"></span>Clientes</a>
+                        </li>
+                        <li>
+                            <a href="../reportes/lista.php"><span class="fa fa-file-text mr-3"></span> Reportes</a>
+                        </li>
+                    </ul>
+                    <div class="footer">
+                        <p>GADAFA &copy;
+                            <script>document.write(new Date().getFullYear());</script>
+                        </p>
+                    </div>
+                </div>
+            </nav>
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
