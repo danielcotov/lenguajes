@@ -24,21 +24,22 @@
                                             :genero, :fecha_nacimiento, :fecha_ingreso,
                                             :salario); END;";
             $parseUpdate = oci_parse($conn, $sqlUpdate);
-            if ($_POST['pais'] == 0 ){
+
+            if ($_POST['pais'] == '0' ){
                 $bindPais = $_POST['otro_pais'];
             }
             else
             {
                 $bindPais = $_POST['pais'];
             }
-            if ($_POST['provincia'] == 0 ){
+            if ($_POST['provincia'] == '0' ){
                 $bindProvincia = $_POST['otra_provincia'];
             }
             else
             {
                 $bindProvincia = $_POST['provincia'];
             }
-            if ($_POST['canton'] == 0 ){
+            if ($_POST['canton'] == '0' ){
                 $bindCanton = $_POST['otro_canton'];
             }
             else
@@ -64,21 +65,21 @@
                                             :telefono, :direccion, :canton, :provincia, :pais, :genero, 
                                             :fecha_nacimiento, :fecha_ingreso, :salario); END;";
             $parseInsert = oci_parse($conn, $sqlInsert);
-            if ($_POST['pais'] == 0 ){
+            if ($_POST['pais'] == '0' ){
                 $bindPais = $_POST['otro_pais'];
             }
             else
             {
                 $bindPais = $_POST['pais'];
             }
-            if ($_POST['provincia'] == 0 ){
+            if ($_POST['provincia'] == '0' ){
                 $bindProvincia = $_POST['otra_provincia'];
             }
             else
             {
                 $bindProvincia = $_POST['provincia'];
             }
-            if ($_POST['canton'] == 0 ){
+            if ($_POST['canton'] == '0' ){
                 $bindCanton = $_POST['otro_canton'];
             }
             else
