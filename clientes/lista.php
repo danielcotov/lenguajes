@@ -27,34 +27,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="../resources/css/style.css">
         <link rel="stylesheet" href="../resources/css/font.css">
-        <style>
-            .dropdown {
-            position: relative;
-            display: inline-block;
-            }
-
-            .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            }
-
-            .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            }
-
-            .dropdown-content a:hover {background-color: #007bff;}
-
-            .dropdown:hover .dropdown-content {display: block;}
-
-            .dropdown:hover .dropbtn {background-color: #007bff;}
-        </style>
     </head>
     <body>
         <div class="wrapper d-flex align-items-stretch" style="font-family: 'Bogle';">
@@ -90,7 +62,7 @@
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Customer List</h3>
+                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Clientes</h3>
                         <hr style="height: 5px; background-color: #007DC6;">
                         <div class="container text-left">
                             <a href="formulario.php" class="btn btn-success">Agregar Cliente</a>                    
@@ -113,14 +85,6 @@
                             </tbody>
                         </table>
                         <br>
-                        <div class="dropdown">
-                            <button class="btn btn-success">Opciones</button>
-                                <div class="dropdown-content">
-                                    <a href="#">Cliente mas viejo</a>
-                                </div>
-                            </div>
-                        <br>
-                        <br>
 
                         <table class="table table-bordered">
                             <thead>
@@ -129,6 +93,9 @@
                                     <th>Nombre</th>
                                     <th>Apellido</th>
                                     <th>Direccion</th>
+                                    <th>Canton</th>
+                                    <th>Provincia</th>
+                                    <th>Pais</th>
                                     <th>Correo</th>
                                     <th>Telefono</th>
                                     <th>Genero</th>
@@ -145,6 +112,9 @@
                                             echo '<td>'. $row['NOMBRE'] .'</td>';
                                             echo '<td>'. $row['APELLIDO'] .'</td>';
                                             echo '<td>'. $row['DIRECCION'].'</td>';
+                                            echo '<td>'. $row['CANTON'].'</td>';
+                                            echo '<td>'. $row['PROVINCIA'].'</td>';
+                                            echo '<td>'. $row['PAIS'].'</td>';
                                             echo '<td>'. $row['CORREO'] .'</td>';
                                             echo '<td>'. $row['TELEFONO'] .'</td>';
                                             echo '<td>'. $row['GENERO'] .'</td>';

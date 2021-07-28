@@ -147,7 +147,7 @@
                             <a href="../productos/lista.php"><span class="fa fa-shopping-cart mr-3"></span> Productos</a>
                         </li>
                         <li>
-                            <a href="lista.php"><span class="fa fa-users mr-3"></span> Clientes</a>
+                            <a href="../clientes/lista.php"><span class="fa fa-users mr-3"></span> Clientes</a>
                         </li>
                         <li>
                             <a href="../reportes/lista.php"><span class="fa fa-file-text mr-3"></span> Reportes</a>
