@@ -1,24 +1,54 @@
-    <!DOCTYPE html>
-    <html>
-
+<?php
+    
+    include '../resources/conexionBD.php';
+        
+    if(isset($_POST['btn-PMV']))
+    {
+        $sql = "BEGIN PRODUCTOS_MAS_VENDIDOS(:cur,:fecha); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+    
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_bind_by_name($parse, ':fecha', $fecha, 32);
+        $newDate = date("y-m-d", strtotime($_POST['fecha']));
+        $fecha = $newDate;
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
+    if(isset($_POST['btn-EMR']))
+    {
+        $sql = "BEGIN EMPLEADOS_MAS_RECIENTES(:cur); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+    
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
+    
+    
+?>
+<html>
     <head>
-        <title>Gualmarsh / Reports</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Gualmarsh / Reportes</title>
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="../resources/css/style.css">
         <link rel="stylesheet" href="../resources/css/font.css">
     </head>
-
     <body>
         <div class="wrapper d-flex align-items-stretch" style="font-family: 'Bogle';">
-            <nav id="sidebar">
+        <nav id="sidebar">
                 <div class="custom-menu">
                 </div>
                 <div class="p-4">
-                    <img src="../resources/images/logo.png" width="275" height="65" alt="Logo" />
+                    <img src="../resources/images/logo.png" width="275" height="65" alt="Logo"/> 
                     <ul class="list-unstyled components mb-5">
                         <li>
                             <a href="../index.php"><span class="fa fa-home mr-3"></span> Inicio</a>
@@ -41,42 +71,106 @@
                             <script>document.write(new Date().getFullYear());</script>
                         </p>
                     </div>
-
                 </div>
             </nav>
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Reportes</h3>
-                        <hr style="height: 5px; background-color: #007DC6;">
-                    </div>
-                </div>
-                <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="containerreporticon" style="top: 150px; left: 350px">
-                        <a href="<%=request.getContextPath()%>/Product-Report">
-                            <img src="../resources/images/productsreport.png" alt="Product Report" class="imagereports"
-                                style="top: 150px; left: 350px; width: 100%;" />
-                        </a>
-                    </div>
-                </div>
-                <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="containerreporticon" style="top: 150px; left: 860px">
-                        <a href="<%=request.getContextPath()%>/Employee-Report">
-                            <img src="../resources/images/employeereport.png" alt="Employee Report" class="imagereports"
-                                style="top: 150px; left: 860px; width: 100%;" />
-                        </a>
-                    </div>
-                </div>
-                <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="containerreporticon" style="top: 150px; left: 1370px">
-                        <a href="<%=request.getContextPath()%>/Customer-Report">
-                            <img src="../resources/images/customerreport.png" alt="Customer Report" class="imagereports"
-                                style="top: 150px; left: 1370px; width: 100%;" />
-                        </a>
+                        <form method="post">
+                            <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Reportes</h3>
+                            <hr style="height: 5px; background-color: #007DC6;">
+                            <div class="container text-left">
+                                <button style="margin:10px 10px 10px 1px;" type="submit" name="btn-PMV" class="btn btn-success">Productos Más Vendidos</button>
+                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-EMR" class="btn btn-success">Empleados Más Recientes</button>      
+                            </div>
+                            </br>
+                            <div class="container text-left">
+                                <input type="text" name = "fecha">
+                            </div>
+                            <br>
+                            <?php
+                                if(isset($_POST['btn-PMV']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>PRODUCTO</th>
+                                        <th>CANTIDAD</th>
+                                        <th>FECHA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                        {
+                                            echo '<tr>';
+                                            echo '<td name="nombre'.$row["ID"].'">'. $row['NOMBRE'] .'</td>';
+                                            echo '<td>'. $row['CANTIDAD'] .'</td>';
+                                            $newDate = date("d-m-Y", strtotime($row['FECHA']));
+                                            echo '<td>'. $newDate .'</td>';
+                                            echo '</tr>';
+                                        }                      
+                                    ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
+                                
+                                if(isset($_POST['btn-EMR']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>APELLIDO</th>
+                                        <th>CORREO</th>
+                                        <th>TELÉFONO</th>
+                                        <th>DIRECCIÓN</th>
+                                        <th>CANTÓN</th>
+                                        <th>PROVINCIA</th>
+                                        <th>PAIS</th>
+                                        <th>GÉNERO</th>
+                                        <th>FECHA NACIMIENTO</th>
+                                        <th>FECHA INGRESO</th>
+                                        <th>SALARIO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td name="nombre'.$row["ID"].'">'. $row['NOMBRE'] .'</td>';
+                                        echo '<td>'. $row['APELLIDO'] .'</td>';
+                                        echo '<td>'. $row['CORREO'] .'</td>';
+                                        echo '<td>'. $row['TELEFONO'] .'</td>';
+                                        echo '<td>'. $row['DIRECCION'] .'</td>';
+                                        echo '<td>'. $row['CANTON'] .'</td>';
+                                        echo '<td>'. $row['PROVINCIA'] .'</td>';
+                                        echo '<td>'. $row['PAIS'] .'</td>';
+                                        echo '<td>'. $row['GENERO'] .'</td>';
+                                        $newDate = date("d-m-Y", strtotime($row['FECHA_NACIMIENTO']));
+                                        echo '<td>'. $newDate .'</td>';
+                                        $newDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
+                                        echo '<td>'. $newDate .'</td>';
+                                        echo '<td>'. $row['SALARIO'] .'</td>';
+                                        echo '</tr>';
+                                    }                     
+                                ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
+                            ?>
+                        </form>
                     </div>
                 </div>
             </div>
+            <br>
         </div>
     </body>
-
-    </html>
+</html>

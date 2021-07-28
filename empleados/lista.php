@@ -36,7 +36,7 @@
                             <a href="../index.php"><span class="fa fa-home mr-3"></span> Inicio</a>
                         </li>
                         <li class="active">
-                            <a href="../empleados/lista.php"><span class="fa fa-bar-chart mr-3"></span> Empleados</a>
+                            <a href="lista.php"><span class="fa fa-bar-chart mr-3"></span> Empleados</a>
                         </li>
                         <li>
                             <a href="../productos/lista.php"><span class="fa fa-shopping-cart mr-3"></span> Productos</a>
