@@ -10,6 +10,7 @@
     
         oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
         oci_bind_by_name($parse, ':fecha', $fecha, 32);
+        //$newDate = date("d-m-y", strtotime($_POST['fecha']));
         $newDate = date("y-m-d", strtotime($_POST['fecha']));
         $fecha = $newDate;
         oci_execute($parse);
@@ -109,6 +110,7 @@
                                             echo '<td name="nombre'.$row["ID"].'">'. $row['NOMBRE'] .'</td>';
                                             echo '<td>'. $row['CANTIDAD'] .'</td>';
                                             $newDate = date("d-m-Y", strtotime($row['FECHA']));
+                                            //echo '<td>'. $row['FECHA'] .'</td>';
                                             echo '<td>'. $newDate .'</td>';
                                             echo '</tr>';
                                         }                      
