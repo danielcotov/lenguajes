@@ -8,6 +8,8 @@
                         ":direccion"=>"",":canton"=>"",":provincia"=>"",
                         ":pais"=>"",":correo"=>"",":telefono"=>"", 
                         ":genero"=>"", ":fecha_nacimiento"=>"");
+    echo '<script>console.log("'.$_GET['id'].'"); </script>';
+
     foreach ($bindArray as $key => $val) {
         oci_bind_by_name($parse, $key, $bindArray[$key], 32);
     }
@@ -83,9 +85,9 @@
                 $bindCanton = $_POST['canton'];
             }
             $bindArrayInsert = array(":id"=>$_POST['id_cliente'],":nombre"=>$_POST['nombre'], ":apellido"=>$_POST['apellido'], 
-            ":direccion"=>$_POST['dirrecion'], ":canton"=>$bindCanton, ":provincia"=>$bindProvincia, ":pais"=>$bindPais,
+            ":direccion"=>$_POST['direccion'], ":canton"=>$bindCanton, ":provincia"=>$bindProvincia, ":pais"=>$bindPais,
             ":correo"=>$_POST['correo'], ":telefono"=>$_POST['telefono'], ":genero"=>$_POST['genero'],
-            ":fecha_nacimiento"=>$_POST['fecha_nacimiento']);
+            ":fecha_nacimiento"=>$_POST['fechaNacimiento']);
             foreach ($bindArrayInsert as $key => $val) {
                 oci_bind_by_name($parseInsert, $key, $bindArrayInsert[$key], 32);
             }
@@ -161,7 +163,6 @@
            <div id="content" class="container col-md-5 pt-5">
                 <div class="card">
                     <div class="card-body">
-                        <c:if test="${customer != null}">
                             <form action="" method="post">
                             <caption>
                                 <h2 style="font-family: 'Bogle'; font-size: 40px;">
@@ -184,7 +185,7 @@
                              ?>  
                                 <fieldset class="form-group">
                                     <label>ID Cliente</label>
-                                    <input type="text"
+                                    <input readonly type="text"
                                            value="<?php
                                         $sqlCount = "BEGIN :result := CANTIDAD_CLIENTES; END;";
                                         $parseCount = oci_parse($conn, $sqlCount);
@@ -249,35 +250,35 @@
                                     name="direccion">
                                 </fieldset>
                                 <fieldset class="form-group">
-                                <label>País</label> 
-                                <select name ="pais" id="pais" class="form-control">
-                                <?php
-                                    $sqlPaises = "BEGIN LISTAR_PAISES(:cur); END;";
-                                    $parsePaises = oci_parse($conn, $sqlPaises);
-                                    $cur = oci_new_cursor($conn);
-                                    oci_bind_by_name($parsePaises, ':cur', $cur, -1, OCI_B_CURSOR);
-                                    
-                                    oci_execute($parsePaises);
-                                    oci_execute($cur);
-                                    oci_free_statement($parsePaises);
-                                    if ($_GET['id'] !=null)
-                                    {
-                                        echo '<option value="'.$bindArray[":pais"].'">'.$bindArray[":pais"].'</option>';
-                                    }
-                                    else
-                                    {
-                                        echo '<option value="default">Seleccione un país</option>';
-                                    }
-                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
-                                    {
-                                        if ($bindArray[":pais"]!=$row["NOMBRE"])
+                                    <label>País</label> 
+                                    <select name ="pais" id="pais" class="form-control">
+                                    <?php
+                                        $sqlPaises = "BEGIN LISTAR_PAISES(:cur); END;";
+                                        $parsePaises = oci_parse($conn, $sqlPaises);
+                                        $cur = oci_new_cursor($conn);
+                                        oci_bind_by_name($parsePaises, ':cur', $cur, -1, OCI_B_CURSOR);
+                                        
+                                        oci_execute($parsePaises);
+                                        oci_execute($cur);
+                                        oci_free_statement($parsePaises);
+                                        if ($_GET['id'] !=null)
                                         {
-                                            echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
+                                            echo '<option value="'.$bindArray[":pais"].'">'.$bindArray[":pais"].'</option>';
                                         }
-                                    }
-                                    echo '<option value="0">Otro...</option>';
-                                ?> 
-                                </select>
+                                        else
+                                        {
+                                            echo '<option value="default">Seleccione un país</option>';
+                                        }
+                                        while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                        {
+                                            if ($bindArray[":pais"]!=$row["NOMBRE"])
+                                            {
+                                                echo '<option value="'.$row["NOMBRE"].'">'.$row["NOMBRE"].'</option>';
+                                            }
+                                        }
+                                        echo '<option value="0">Otro...</option>';
+                                    ?> 
+                                    </select>
                             </fieldset>
                             <fieldset class="form-group">
                                 <input id="otro_pais" type="text" style="display: none;"
@@ -374,11 +375,50 @@
                                         class="form-control"
                                         name="fechaNacimiento" required="required">
                                 </fieldset>
-                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="submit" name="btnGuardar" class="btn btn-success">Guardar</button>
                             </form>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            $("#pais").change(function(){
+                if($(this).val() == 0){
+                    $("#otro_pais").show();
+                }else{
+                    $("#otro_pais").hide();
+                }
+                var pais = $("#pais").val();
+                $.post("provincias.php", { pais: pais}, 
+                function(data){
+                    $("#provincia").html( data );
+                    $("#provincia").removeAttr("disabled");
+                });
+
+            });
+            $("#canton").change(function(){
+                if($(this).val() == 0){
+                    $("#otro_canton").show();
+                }else{
+                    $("#otro_canton").hide();
+                }
+
+            });
+            $("#provincia").change(function(){
+                if($(this).val() == 0){
+                    $("#otra_provincia").show();
+                }else{
+                    $("#otra_provincia").hide();
+                }
+                var provincia = $("#provincia").val();
+                $.post("cantones.php", { provincia: provincia}, 
+                function(data){
+                    $("#canton").html( data );
+                    $("#canton").removeAttr("disabled");
+                });
+
+            });
+
+        </script>
     </body>
 </html>

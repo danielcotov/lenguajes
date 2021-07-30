@@ -13,7 +13,6 @@
     if ($_GET['id'] !=null)
     {
         echo '<option value="'.$bindArray[":canton"].'">'.$bindArray[":canton"].'</option>';
-        echo '<script>$("#canton").removeAttr("disabled");</script>';
     }
     else
     {
