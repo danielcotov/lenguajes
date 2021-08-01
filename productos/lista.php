@@ -56,11 +56,11 @@
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Product List</h3>
+                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Productos</h3>
                         <hr style="height: 5px; background-color: #007DC6;">
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/product-new" id="add-product" class="btn btn-success">Add Product</a>                    
-                            <a href="<%=request.getContextPath()%>/categories" class="btn btn-success">See Categories</a>            
+                            <a href="formulario.php" id="add-product" class="btn btn-success">Agregar Producto</a>                    
+                            <a href="categorias.php" class="btn btn-success">Ver Categorias</a>            
                         </div>
                         <br>
                         <table class="table table-bordered">
@@ -90,7 +90,6 @@
                                             echo '</tr>';
                                         }               
                                     ?>
-                                </c:forEach>
                             </tbody>
                         </table>
                     </div>

@@ -8,8 +8,6 @@
                         ":direccion"=>"",":canton"=>"",":provincia"=>"",
                         ":pais"=>"",":correo"=>"",":telefono"=>"", 
                         ":genero"=>"", ":fecha_nacimiento"=>"");
-    echo '<script>console.log("'.$_GET['id'].'"); </script>';
-
     foreach ($bindArray as $key => $val) {
         oci_bind_by_name($parse, $key, $bindArray[$key], 32);
     }
@@ -98,6 +96,9 @@
             header('Location: lista.php');
         }
     }
+?>
+<?php
+var_dump($bindArray);
 ?>
 
 <html>
