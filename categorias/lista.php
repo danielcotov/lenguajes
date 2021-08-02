@@ -1,7 +1,7 @@
 <?php
     include '../resources/conexionBD.php';
     
-    $sql = "BEGIN LISTAR_PRODUCTOS(:cur); END;";
+    $sql = "BEGIN  LISTAR_CATEGORIAS_2(:cur); END;";
     $parse = oci_parse($conn, $sql);
     $cur = oci_new_cursor($conn);
     oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
@@ -56,11 +56,11 @@
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Productos</h3>
+                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Categorias</h3>
                         <hr style="height: 5px; background-color: #007DC6;">
                         <div class="container text-left">
-                            <a href="formulario.php" id="add-product" class="btn btn-success">Agregar Producto</a>                    
-                            <a href="../categorias/lista.php" class="btn btn-success">Ver Categorias</a>            
+                            <a href="../productos/lista.php" class="btn btn-success">Ver Productos</a>   
+                            <a href="formulario.php" id="add-product" class="btn btn-success">Agregar Categoria</a>                             
                         </div>
                         <br>
                         <table class="table table-bordered">
@@ -68,11 +68,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Descripcion</th>
-                                    <th>Cantidad</th>
-                                    <th>Categoria</th>
-                                    <th>Actions</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -80,12 +76,8 @@
                                         while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
                                         {
                                             echo '<tr>';
-                                            echo '<td>'. $row['ID'] .'</td>';
+                                            echo '<td>'. $row['ID_CATEGORIA'] .'</td>';
                                             echo '<td>'. $row['NOMBRE'] .'</td>';
-                                            echo '<td>'. $row['PRECIO'] .'</td>';
-                                            echo '<td>'. $row['DESCRIPCION'] .'</td>';
-                                            echo '<td>'. $row['CANTIDAD'] .'</td>';
-                                            echo '<td>'. $row['CATEGORIA'] .'</td>';
                                             echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
                                             echo '</tr>';
                                         }               

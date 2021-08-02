@@ -58,9 +58,8 @@
             header('Location: lista.php');
         }
     }
-?>
-<?php
-var_dump($bindArray);
+    var_dump($bindArray);
+
 ?>
 <html>
     <head>
@@ -103,7 +102,7 @@ var_dump($bindArray);
                         <li>
                             <a href="../empleados/lista.php"><span class="fa fa-bar-chart mr-3"></span> Empleados</a>
                         </li>
-                        <li class="lista">
+                        <li class="active">
                             <a href="../productos/lista.php"><span class="fa fa-shopping-cart mr-3"></span> Productos</a>
                         </li>
                         <li>

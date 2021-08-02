@@ -97,9 +97,6 @@
         }
     }
 ?>
-<?php
-var_dump($bindArray);
-?>
 
 <html>
     <head>
