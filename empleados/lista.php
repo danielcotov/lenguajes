@@ -77,7 +77,7 @@
                                     <th>PAIS</th>
                                     <th>GÉNERO</th>
                                     <th>FECHA NACIMIENTO</th>
-                                    <th>FECHA INGRESO</th>
+                                    <th>FECHA INGRESO&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                     <th>SALARIO</th>
                                     <th>ACCIONES</th>
                                 </tr>
@@ -96,8 +96,12 @@
                                         echo '<td>'. $row['PROVINCIA'] .'</td>';
                                         echo '<td>'. $row['PAIS'] .'</td>';
                                         echo '<td>'. $row['GENERO'] .'</td>';
+                                        //$newBirthDate = date("d-m-Y", strtotime($row['FECHA_NACIMIENTO']));
                                         echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
+                                        //echo '<td>'. $newBirthDate .'</td>';
+                                        //$newHireDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
                                         echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
+                                        //echo '<td>'. $newHireDate .'</td>';
                                         echo '<td>'. $row['SALARIO'] .'</td>';
                                         echo '<td><a name = "btnActualizar" href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
                                         echo '</tr>';

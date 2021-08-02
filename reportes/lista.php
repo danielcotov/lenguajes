@@ -11,8 +11,7 @@
         oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
         oci_bind_by_name($parse, ':fecha', $fecha, 32);
         //$newDate = date("d-m-y", strtotime($_POST['fecha']));
-        $newDate = date("y-m-d", strtotime($_POST['fecha']));
-        $fecha = $newDate;
+        $fecha = $_POST['fecha'];
         oci_execute($parse);
         oci_execute($cur);
         oci_free_statement($parse);
@@ -28,7 +27,29 @@
         oci_execute($cur);
         oci_free_statement($parse);
     }
-    
+
+    if(isset($_POST['btn-AS']))
+    {
+        $sql = "BEGIN AUMENTAR_SALARIOS(:cur, :porcentaje); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_bind_by_name($parse, ':porcentaje', $porcentaje, 32);
+        $porcentaje = $_POST['porcentaje'];
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
+    if(isset($_POST['btn-CA']))
+    {
+        $sql = "BEGIN CALCULAR_AGUINALDOS(:cur); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
     
 ?>
 <html>
@@ -82,11 +103,15 @@
                             <hr style="height: 5px; background-color: #007DC6;">
                             <div class="container text-left">
                                 <button style="margin:10px 10px 10px 1px;" type="submit" name="btn-PMV" class="btn btn-success">Productos Más Vendidos</button>
-                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-EMR" class="btn btn-success">Empleados Más Recientes</button>      
+                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-EMR" class="btn btn-success">Empleados Más Recientes</button>
+                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-AS" class="btn btn-success">Aumentar Salarios</button>
+                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-CA" class="btn btn-success">Calcular Aguinaldos</button>      
                             </div>
                             </br>
                             <div class="container text-left">
-                                <input type="text" name = "fecha">
+                                <input style="margin:10px 10px 10px 10px;" type="text" name = "fecha" placeholder="dd-mm-yyyy">
+                                <input style="margin:10px 10px 10px 348px;" type="text" name = "porcentaje" placeholder="%">
+
                             </div>
                             <br>
                             <?php
@@ -107,11 +132,11 @@
                                         while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
                                         {
                                             echo '<tr>';
-                                            echo '<td name="nombre'.$row["ID"].'">'. $row['NOMBRE'] .'</td>';
+                                            echo '<td>'. $row['NOMBRE'] .'</td>';
                                             echo '<td>'. $row['CANTIDAD'] .'</td>';
-                                            $newDate = date("d-m-Y", strtotime($row['FECHA']));
-                                            //echo '<td>'. $row['FECHA'] .'</td>';
-                                            echo '<td>'. $newDate .'</td>';
+                                            //$newDate = date("d-m-Y", strtotime($row['FECHA']));
+                                            echo '<td>'. $row['FECHA'] .'</td>';
+                                            //echo '<td>'. $newDate .'</td>';
                                             echo '</tr>';
                                         }                      
                                     ?>
@@ -137,7 +162,7 @@
                                         <th>PAIS</th>
                                         <th>GÉNERO</th>
                                         <th>FECHA NACIMIENTO</th>
-                                        <th>FECHA INGRESO</th>
+                                        <th>FECHA INGRESO&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                         <th>SALARIO</th>
                                     </tr>
                                 </thead>
@@ -155,13 +180,83 @@
                                         echo '<td>'. $row['PROVINCIA'] .'</td>';
                                         echo '<td>'. $row['PAIS'] .'</td>';
                                         echo '<td>'. $row['GENERO'] .'</td>';
-                                        $newDate = date("d-m-Y", strtotime($row['FECHA_NACIMIENTO']));
-                                        echo '<td>'. $newDate .'</td>';
-                                        $newDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
-                                        echo '<td>'. $newDate .'</td>';
+                                        //$newDate = date("d-m-Y", strtotime($row['FECHA_NACIMIENTO']));
+                                        //echo '<td>'. $newDate .'</td>';
+                                        echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
+                                        //$newDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
+                                        //echo '<td>'. $newDate .'</td>';
+                                        echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
                                         echo '<td>'. $row['SALARIO'] .'</td>';
                                         echo '</tr>';
                                     }                     
+                                ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
+                                if(isset($_POST['btn-AS']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>APELLIDO</th>
+                                        <th>FECHA INGRESO&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th>SALARIO ANTERIOR</th>
+                                        <th>SALARIO NUEVO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['NOMBRE'] .'</td>';
+                                        echo '<td>'. $row['APELLIDO'] .'</td>';
+                                        //$newDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
+                                        //echo '<td>'. $newDate .'</td>';
+                                        echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
+                                        echo '<td>'. $row['SALARIO ANTERIOR'] .'</td>';
+                                        echo '<td>'. $row['SALARIO'] .'</td>';
+                                        echo '</tr>';
+                                    }
+
+                                ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
+                                if(isset($_POST['btn-CA']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>APELLIDO</th>
+                                        <th>FECHA INGRESO&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th>SALARIO</th>
+                                        <th>AGUINALDO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['NOMBRE'] .'</td>';
+                                        echo '<td>'. $row['APELLIDO'] .'</td>';
+                                        $newDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
+                                        echo '<td>'. $newDate .'</td>';
+                                        //echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
+                                        echo '<td>'. $row['SALARIO'] .'</td>';
+                                        echo '<td>'. $row['AGUINALDO'] .'</td>';
+                                        echo '</tr>';
+                                    }
+
                                 ?>
                                 </tbody>
                             </table>
