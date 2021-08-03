@@ -58,8 +58,6 @@
             header('Location: lista.php');
         }
     }
-    var_dump($bindArray);
-
 ?>
 <html>
     <head>

@@ -86,6 +86,7 @@
             ":direccion"=>$_POST['direccion'], ":canton"=>$bindCanton, ":provincia"=>$bindProvincia, ":pais"=>$bindPais,
             ":correo"=>$_POST['correo'], ":telefono"=>$_POST['telefono'], ":genero"=>$_POST['genero'],
             ":fecha_nacimiento"=>$_POST['fechaNacimiento']);
+
             foreach ($bindArrayInsert as $key => $val) {
                 oci_bind_by_name($parseInsert, $key, $bindArrayInsert[$key], 32);
             }
