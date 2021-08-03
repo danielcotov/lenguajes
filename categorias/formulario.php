@@ -159,6 +159,7 @@
                                         name="nombre" required="required">
                                 </fieldset>
                                 <button type="submit" name="btnGuardar" class="btn btn-success">Guardar</button>
+                                <a href="../categorias/lista.php" class="btn btn-success">Cancelar</a>   
                             </form>
                     </div>
                 </div>

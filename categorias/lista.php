@@ -78,7 +78,7 @@
                                             echo '<tr>';
                                             echo '<td>'. $row['ID_CATEGORIA'] .'</td>';
                                             echo '<td>'. $row['NOMBRE'] .'</td>';
-                                            echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                            echo '<td><a href="formulario.php?id='. $row["ID_CATEGORIA"] .'">Actualizar</a></td>';
                                             echo '</tr>';
                                         }               
                                     ?>
