@@ -8,6 +8,30 @@
     
     oci_execute($parse);
     oci_execute($cur);
+
+    if (isset($_GET['id']))
+    {
+        $sqlEliminar = "BEGIN ELIMINAR_PRODUCTO(:id); END;";
+        $parseEliminar = oci_parse($conn, $sqlEliminar);
+        oci_bind_by_name($parseEliminar, ':id', $id, 32);
+        $id = $_GET['id'];
+        oci_execute($parseEliminar);
+        oci_free_statement($parseEliminar);
+        header('Location: lista.php');
+    }
+    if (isset($_POST['btnBuscar']))
+    {
+        $sqlBuscar = "BEGIN BUSCAR_PRODUCTO(:nombre, :cur); END;";
+        $parseBuscar = oci_parse($conn, $sqlBuscar);
+        $cur = oci_new_cursor($conn);
+        oci_bind_by_name($parseBuscar, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_bind_by_name($parseBuscar, ':nombre', $nombre, 32);
+        $nombre = $_POST['nombreProducto'];
+        oci_execute($parseBuscar);
+        oci_execute($cur);
+        oci_free_statement($parseBuscar);
+    }
+
 ?>
 <html>
     <head>
@@ -52,50 +76,57 @@
                     </div>
                 </div>
             </nav>
-
             <div id="content" class="p-4 p-md-5 pt-5">
                 <div class="row">
                     <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Productos</h3>
-                        <hr style="height: 5px; background-color: #007DC6;">
-                        <div class="container text-left">
-                            <a href="formulario.php" id="add-product" class="btn btn-success">Agregar Producto</a>                    
-                            <a href="../categorias/lista.php" class="btn btn-success">Ver Categorias</a>            
-                        </div>
-                        <br>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Descripcion</th>
-                                    <th>Cantidad</th>
-                                    <th>Categoria</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                                        while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
-                                        {
-                                            echo '<tr>';
-                                            echo '<td>'. $row['ID'] .'</td>';
-                                            echo '<td>'. $row['NOMBRE'] .'</td>';
-                                            echo '<td>'. $row['PRECIO'] .'</td>';
-                                            echo '<td>'. $row['DESCRIPCION'] .'</td>';
-                                            echo '<td>'. $row['CANTIDAD'] .'</td>';
-                                            echo '<td>'. $row['CATEGORIA'] .'</td>';
-                                            echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
-                                            echo '</tr>';
-                                        }               
-                                    ?>
-                            </tbody>
-                        </table>
+                        <form method = "post" action="">
+                            <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Productos</h3>
+                            <hr style="height: 5px; background-color: #007DC6;">
+                            <div class="container text-left">
+                                <a href="formulario.php" id="add-product" class="btn btn-success">Agregar Producto</a>                    
+                                <a href="../categorias/lista.php" class="btn btn-success">Ver Categorias</a> 
+
+                                <input style="margin:10px 10px 10px 10px;" type="text" name = "nombreProducto" placeholder="Nombre Producto">  
+                                <button name="btnBuscar" type="submit" class="btn btn-success">Buscar</button> 
+                            
+                            </div>
+                            <br>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Descripcion</th>
+                                        <th>Cantidad</th>
+                                        <th>Categoria</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                       
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['ID'] .'</td>';
+                                        echo '<td>'. $row['NOMBRE'] .'</td>';
+                                        echo '<td>'. $row['PRECIO'] .'</td>';
+                                        echo '<td>'. $row['DESCRIPCION'] .'</td>';
+                                        echo '<td>'. $row['CANTIDAD'] .'</td>';
+                                        echo '<td>'. $row['CATEGORIA'] .'</td>';
+                                        echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar </a>
+                                                        </br><a name = "btnEliminar" href="lista.php?id='. $row["ID"] .'">Eliminar</a></td>';
+                                        echo '</tr>';
+                                    }  
+                                                   
+                                ?>
+                                </tbody>
+                            </table>
+                        </form> 
                     </div>
                 </div>
             </div>
-            <br>
         </div>
     </body>
 </html>

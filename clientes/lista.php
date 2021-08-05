@@ -10,10 +10,21 @@
     oci_execute($cur);
 
     // Cantidad total de Clientes
-    $sqlFClientes = "SELECT CANTIDAD_CLIENTES FROM DUAL";
-    $sqlLisClientes = oci_parse($conn, $sqlFClientes);
+    $sqlClientes = "SELECT CANTIDAD_CLIENTES FROM DUAL";
+    $parseClientes = oci_parse($conn, $sqlClientes);
 
-    oci_execute($sqlLisClientes);
+    oci_execute($parseClientes);
+
+    if (isset($_GET['id']))
+    {
+        $sqlEliminar = "BEGIN ELIMINAR_CLIENTE(:id); END;";
+        $parseEliminar = oci_parse($conn, $sqlEliminar);
+        oci_bind_by_name($parseEliminar, ':id', $id, 32);
+        $id = $_GET['id'];
+        oci_execute($parseEliminar);
+        oci_free_statement($parseEliminar);
+        header('Location: lista.php');
+    }
 
 ?>
 <html>
@@ -76,7 +87,7 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    $row = oci_fetch_object($sqlLisClientes);
+                                    $row = oci_fetch_object($parseClientes);
                                     $row->CANTIDAD_CLIENTES;
                                     echo '<tr>';
                                     echo '<td>'. $row->CANTIDAD_CLIENTES . "<br>\n";
@@ -119,7 +130,8 @@
                                             echo '<td>'. $row['TELEFONO'] .'</td>';
                                             echo '<td>'. $row['GENERO'] .'</td>';
                                             echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
-                                            echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                            echo '<td><a href="formulario.php?id='. $row["ID"] .'">Actualizar</a>
+                                                        <a name = "btnEliminar" href="lista.php?id='. $row["ID"] .'">Eliminar</a></td>';
                                             echo '</tr>';
                                         }               
                                     ?>
@@ -128,7 +140,6 @@
                     </div>
                 </div>
             </div>
-            <br>
         </div>
     </body>
 </html>

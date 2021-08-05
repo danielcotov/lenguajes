@@ -1,13 +1,25 @@
 <?php
     include '../resources/conexionBD.php';
     
-    $sql = "BEGIN  LISTAR_CATEGORIAS_2(:cur); END;";
+    $sql = "BEGIN  LISTAR_CATEGORIAS(:cur); END;";
     $parse = oci_parse($conn, $sql);
     $cur = oci_new_cursor($conn);
     oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
     
     oci_execute($parse);
     oci_execute($cur);
+
+    if (isset($_GET['id']))
+    {
+        $sqlEliminar = "BEGIN ELIMINAR_CATEGORIA(:id); END;";
+        $parseEliminar = oci_parse($conn, $sqlEliminar);
+        oci_bind_by_name($parseEliminar, ':id', $id, 32);
+        $id = $_GET['id'];
+        oci_execute($parseEliminar);
+        oci_free_statement($parseEliminar);
+        header('Location: lista.php');
+    }
+
 ?>
 <html>
     <head>
@@ -78,7 +90,8 @@
                                             echo '<tr>';
                                             echo '<td>'. $row['ID_CATEGORIA'] .'</td>';
                                             echo '<td>'. $row['NOMBRE'] .'</td>';
-                                            echo '<td><a href="formulario.php?id='. $row["ID_CATEGORIA"] .'">Actualizar</a></td>';
+                                            echo '<td><a href="formulario.php?id='. $row["ID_CATEGORIA"] .'">Actualizar</a>
+                                                        </br><a name = "btnEliminar" href="lista.php?id='. $row["ID_CATEGORIA"] .'">Eliminar</a></td>';
                                             echo '</tr>';
                                         }               
                                     ?>
@@ -87,7 +100,6 @@
                     </div>
                 </div>
             </div>
-            <br>
         </div>
     </body>
 </html>
