@@ -72,4 +72,9 @@
     justify-content: center;
 }
 
+fieldset{
+    border: #C2C2C2;
+    border-width: 1px;
+}    
+
 
