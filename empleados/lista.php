@@ -9,8 +9,18 @@
     oci_execute($parse);
     oci_execute($cur);
     oci_free_statement($parse);
-    oci_close($conn);
 
+    if (isset($_GET['id']))
+    {
+        $sqlEliminar = "BEGIN ELIMINAR_USUARIO(:id); END;";
+        $parseEliminar = oci_parse($conn, $sqlEliminar);
+        oci_bind_by_name($parseEliminar, ':id', $id, 32);
+        $id = $_GET['id'];
+        oci_execute($parseEliminar);
+        oci_free_statement($parseEliminar);
+        header('Location: lista.php');
+
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +36,9 @@
         <link rel="stylesheet" href="../resources/css/style.css">
         <link rel="stylesheet" href="../resources/styles/styles.css">
         <link rel="stylesheet" href="../resources/css/font.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
 <body>
     <div id="mySidenav" class="sidenav">
@@ -84,6 +97,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <form id = "formulario" action="" method="post">
                         <?php
                             while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
                             {
@@ -104,82 +118,16 @@
                                 echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
                                 //echo '<td>'. $newHireDate .'</td>';
                                 echo '<td>'. $row['SALARIO'] .'</td>';
-                                echo '<td><a name = "btnActualizar" href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
+                                echo '<td><a name = "btnActualizar" href="formulario.php?id='. $row["ID"] .'">Actualizar </a>
+                                            <a name = "btnEliminar" href="lista.php?id='. $row["ID"] .'">Eliminar</a></td>';
                                 echo '</tr>';
-                            
-                            }
-                                                    
+                            }               
                         ?>
-                        </c:forEach>
+                        </form>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-
-
-
-
-            <!--<div id="content" class="p-4 p-md-5 pt-5">
-                <div class="row">
-                    <div class="container">
-                        <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista Empleados</h3>
-                        <hr style="height: 5px; background-color: #007DC6;">
-                        <div class="container text-left">
-                            <a href="formulario.php" id="add-employee" class="btn btn-success">Agregar Usuario</a>  
-                        </div>
-                        <br>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>NOMBRE</th>
-                                    <th>APELLIDO</th>
-                                    <th>CORREO</th>
-                                    <th>TELÉFONO</th>
-                                    <th>DIRECCIÓN</th>
-                                    <th>CANTÓN</th>
-                                    <th>PROVINCIA</th>
-                                    <th>PAIS</th>
-                                    <th>GÉNERO</th>
-                                    <th>FECHA NACIMIENTO</th>
-                                    <th>FECHA INGRESO&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                    <th>SALARIO</th>
-                                    <th>ACCIONES</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
-                                    {
-                                        echo '<tr>';
-                                        echo '<td name="nombre'.$row["ID"].'">'. $row['NOMBRE'] .'</td>';
-                                        echo '<td>'. $row['APELLIDO'] .'</td>';
-                                        echo '<td>'. $row['CORREO'] .'</td>';
-                                        echo '<td>'. $row['TELEFONO'] .'</td>';
-                                        echo '<td>'. $row['DIRECCION'] .'</td>';
-                                        echo '<td>'. $row['CANTON'] .'</td>';
-                                        echo '<td>'. $row['PROVINCIA'] .'</td>';
-                                        echo '<td>'. $row['PAIS'] .'</td>';
-                                        echo '<td>'. $row['GENERO'] .'</td>';
-                                        //$newBirthDate = date("d-m-Y", strtotime($row['FECHA_NACIMIENTO']));
-                                        echo '<td>'. $row['FECHA_NACIMIENTO'] .'</td>';
-                                        //echo '<td>'. $newBirthDate .'</td>';
-                                        //$newHireDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
-                                        echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
-                                        //echo '<td>'. $newHireDate .'</td>';
-                                        echo '<td>'. $row['SALARIO'] .'</td>';
-                                        echo '<td><a name = "btnActualizar" href="formulario.php?id='. $row["ID"] .'">Actualizar</a></td>';
-                                        echo '</tr>';
-                                    
-                                    }
-                                                            
-                                ?>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>-->
 </body>
 </html>
