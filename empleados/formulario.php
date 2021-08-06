@@ -423,7 +423,8 @@
                                 class="form-control"
                                 name="salario" required="required">
                         </fieldset>
-                        <button type="submit" name="btnGuardar" class="btn btn-success">Guardar</button>
+                        <br>
+                        <button type="submit" name="btnGuardar" class="btn btn-success" style="font-size: 1.5rem">Guardar</button>
                     </form>
                 </div>
             </div>

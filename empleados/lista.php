@@ -72,7 +72,7 @@
         <div id="content" class="p-4 p-md-5 pt-5" style="margin-left: 7.5%; margin-top:5%">
             <div class="row">
                 <div class="container" style="center">
-                    <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista Empleados</h3>
+                    <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Empleados</h3>
                     <hr style="height: 5px; background-color: #007DC6;">
                     <div class="container text-left" style="margin-top: 2%">
                         <a href="formulario.php" id="add-employee" class="btn btn-success" style="font-size: 1.5rem">Agregar Usuario</a>  

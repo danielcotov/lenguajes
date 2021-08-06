@@ -79,20 +79,18 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="../resources/css/style.css">
+        <link rel="stylesheet" href="../resources/styles/styles.css">
         <link rel="stylesheet" href="../resources/css/font.css">
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
     </head>
     <body>
-        <div class="wrapper d-flex align-items-stretch" style="font-family: 'Bogle';">
-        <nav id="sidebar">
-                <div class="custom-menu">
-                </div>
-                <div class="p-4">
-                    <img src="../resources/images/logo.png" width="275" height="65" alt="Logo"/> 
+        <div id="mySidenav" class="sidenav">
+            <div class="p-4">
+                <img src="../resources/images/logo.png" width="275" height="65" alt="Logo"/> 
                     <ul class="list-unstyled components mb-5">
                         <li>
                             <a href="../index.php"><span class="fa fa-home mr-3"></span> Inicio</a>
@@ -116,10 +114,11 @@
                         </p>
                     </div>
                 </div>
-            </nav>
+            </div>
+        </div>
                         
             <!-- Contenido Principal  -->
-           <div id="content" class="container col-md-5 pt-5">
+           <div id="content" class="container col-md-5 pt-5" style="margin-left: 38%">
                 <div class="card">
                     <div class="card-body">
                             <form action="" method="post">
@@ -260,7 +259,8 @@
                                         name="otra_categoria">
                                     <fieldset class="form-group">
                             </fieldset>
-                            <button type="submit" name="btnGuardar" class="btn btn-success">Guardar</button>
+                            <br>
+                            <button type="submit" name="btnGuardar" class="btn btn-success" style="font-size: 1.5rem">Guardar</button>
                             </form>
                     </div>
                 </div>
