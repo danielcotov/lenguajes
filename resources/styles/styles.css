@@ -77,4 +77,10 @@ fieldset{
     border-width: 1px;
 }    
 
+.box_dashboard{
+    width: auto;
+    border: 5px solid #007DC6;
+    padding-top: 5%;
+    text-align: center;
+}
 

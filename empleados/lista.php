@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div id="content" class="p-4 p-md-5 pt-5" style="margin-left: 7.5%; margin-top:5%">
+        <div id="content" class="p-4 p-md-5 pt-5" style="margin-left: 7.5%">
             <div class="row">
                 <div class="container" style="center">
                     <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Empleados</h3>
