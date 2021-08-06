@@ -50,6 +50,16 @@
         oci_execute($cur);
         oci_free_statement($parse);
     }
+    if(isset($_POST['btn-RA']))
+    {
+        $sql = "BEGIN REPORTE_ACCESO(:cur); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
     
 ?>
 <!DOCTYPE html>
@@ -107,9 +117,10 @@
                             <hr style="height: 5px; background-color: #007DC6;">
                             <div class="container text-left" style="margin-top: 2%">
                                 <button style="margin:10px 10px 10px 1px;" type="submit" name="btn-PMV" class="btn btn-success" >Productos Más Vendidos</button>
-                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-EMR" class="btn btn-success" >Empleados Más Recientes</button>
-                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-AS" class="btn btn-success" >Aumentar Salarios</button>
-                                <button style="margin:10px 10px 10px 50px;" type="submit" name="btn-CA" class="btn btn-success" >Calcular Aguinaldos</button>      
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-EMR" class="btn btn-success" >Empleados Más Recientes</button>
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-AS" class="btn btn-success" >Aumentar Salarios</button>
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-CA" class="btn btn-success" >Calcular Aguinaldos</button>
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-RA" class="btn btn-success" >Reporte De Accesos</button>      
                             </div>
                             </br>
                             <div class="container text-left">
@@ -253,11 +264,37 @@
                                         echo '<tr>';
                                         echo '<td>'. $row['NOMBRE'] .'</td>';
                                         echo '<td>'. $row['APELLIDO'] .'</td>';
-                                        $newDate = date("d-m-Y", strtotime($row['FECHA_INGRESO']));
-                                        echo '<td>'. $newDate .'</td>';
-                                        //echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
+                                        echo '<td>'. $row['FECHA_INGRESO'] .'</td>';
                                         echo '<td>'. $row['SALARIO'] .'</td>';
                                         echo '<td>'. $row['AGUINALDO'] .'</td>';
+                                        echo '</tr>';
+                                    }
+
+                                ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
+                                if(isset($_POST['btn-RA']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>FECHA Y HORA</th>
+                                        <th>USUARIO</th>
+                                        <th>MENSAJE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['FECHA'] .'</td>';
+                                        echo '<td>'. $row['USUARIO'] .'</td>';
+                                        echo '<td>'. $row['MENSAJE'] .'</td>';
                                         echo '</tr>';
                                     }
 
