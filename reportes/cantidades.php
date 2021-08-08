@@ -13,7 +13,7 @@ oci_execute($parseProductos);
 ?>
 
 <div class=row>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="box_dashboard">
             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 20px;">Cantidad de Clientes</h3>
             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px; font-weight: bold">
@@ -25,7 +25,7 @@ oci_execute($parseProductos);
             </h3>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="box_dashboard">
             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 20px;">Cantidad de Empleados</h3>
             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px; font-weight: bold">
@@ -37,7 +37,7 @@ oci_execute($parseProductos);
             </h3>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="box_dashboard">
             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 20px;">Cantidad de Productos</h3>
             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px; font-weight: bold">
