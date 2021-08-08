@@ -1,6 +1,10 @@
 <?php
     include 'resources/conexionBD.php';
-    
+
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
     if(isset($_POST['btnLogin']))
     {
     
@@ -11,6 +15,7 @@
         oci_bind_by_name($parse, ':resultado', $resultado, 32);
         $username = $_POST['username'];
         $password = $_POST['password'];
+        $_SESSION['username'] = $_POST['username'];
         
         oci_execute($parse);
         oci_free_statement($parse);

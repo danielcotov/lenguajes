@@ -1,7 +1,9 @@
 <?php
     
     include '../resources/conexionBD.php';
-        
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     if(isset($_POST['btn-PMV']))
     {
         $sql = "BEGIN PRODUCTOS_MAS_VENDIDOS(:cur,:fecha); END;";
@@ -27,7 +29,6 @@
         oci_execute($cur);
         oci_free_statement($parse);
     }
-
     if(isset($_POST['btn-AS']))
     {
         $sql = "BEGIN AUMENTAR_SALARIOS(:cur, :porcentaje); END;";
@@ -60,7 +61,36 @@
         oci_execute($cur);
         oci_free_statement($parse);
     }
-    
+    if(isset($_POST['btn-CP']))
+    {
+        $sql = "BEGIN REPORTE_CAMBIOS_PRODUCTO(:cur); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
+    if(isset($_POST['btn-AG']))
+    {
+        $sql = "BEGIN AUDITORIA_GENERAL(:cur); END;";
+        $parse = oci_parse($conn, $sql);
+        $cur = oci_new_cursor($conn);
+        oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
+        oci_execute($parse);
+        oci_execute($cur);
+        oci_free_statement($parse);
+    }
+    if(isset($_POST['btn-CS']))
+    {
+        $sql = "BEGIN CIERRE_SESION(:usuario); END;";
+        $parse = oci_parse($conn, $sql);
+        oci_bind_by_name($parse, ':usuario', $usuario, 32);
+        $usuario = $_SESSION['username'];
+        oci_execute($parse);
+        oci_free_statement($parse);
+        header('Location: ../login.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -120,12 +150,15 @@
                                 <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-EMR" class="btn btn-success" >Empleados Más Recientes</button>
                                 <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-AS" class="btn btn-success" >Aumentar Salarios</button>
                                 <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-CA" class="btn btn-success" >Calcular Aguinaldos</button>
-                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-RA" class="btn btn-success" >Reporte De Accesos</button>      
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-RA" class="btn btn-success" >Reporte De Accesos</button>
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-CP" class="btn btn-success" >Cambios Productos</button>
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-AG" class="btn btn-success" >Auditoría General</button>
+                                <button style="margin:10px 10px 10px 10px;" type="submit" name="btn-CS" class="btn btn-success" >Cerrar Sesión</button>      
                             </div>
                             </br>
                             <div class="container text-left">
-                                <input style="margin:10px 10px 10px 10px;" type="text" name = "fecha" placeholder="dd-mm-yyyy">
-                                <input style="margin:10px 10px 10px 348px;" type="text" name = "porcentaje" placeholder="%">
+                                <input style="margin:10px 10px 10px 10px;" type="text" name="fecha" placeholder="dd-mm-yyyy">
+                                <input style="margin:10px 10px 10px 348px;" type="text" name="porcentaje" placeholder="%">
 
                             </div>
                             <br>
@@ -303,12 +336,76 @@
                             </table>
                             <?php
                                 }
+                                if(isset($_POST['btn-AG']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>FECHA Y HORA</th>
+                                        <th>USUARIO</th>
+                                        <th>MENSAJE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['FECHA'] .'</td>';
+                                        echo '<td>'. $row['USUARIO'] .'</td>';
+                                        echo '<td>'. $row['MENSAJE'] .'</td>';
+                                        echo '</tr>';
+                                    }
+
+                                ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
+                                if(isset($_POST['btn-CP']))
+                                {
+
+                            ?>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>FECHA Y HORA</th>
+                                        <th>USUARIO</th>
+                                        <th>ESTADO</th>
+                                        <th>ID</th>
+                                        <th>NOMBRE</th>
+                                        <th>DESCRIPCION</th>
+                                        <th>CANTIDAD</th>
+                                        <th>CATEGORIA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    while (($row = oci_fetch_array($cur, OCI_ASSOC)) != false)  
+                                    {
+                                        echo '<tr>';
+                                        echo '<td>'. $row['FECHA'] .'</td>';
+                                        echo '<td>'. $row['USUARIO'] .'</td>';
+                                        echo '<td>'. $row['ESTADO'] .'</td>';
+                                        echo '<td>'. $row['ID_PRODUCTO'] .'</td>';
+                                        echo '<td>'. $row['NOMBRE'] .'</td>';
+                                        echo '<td>'. $row['DESCRIPCION'] .'</td>';
+                                        echo '<td>'. $row['CANTIDAD_INV'] .'</td>';
+                                        echo '<td>'. $row['ID_CATEGORIA'] .'</td>';
+                                        echo '</tr>';
+                                    }
+                                ?>
+                                </tbody>
+                            </table>
+                            <?php
+                                }
                             ?>
                         </form>
                     </div>
                 </div>
             </div>
-            <br>
         </div>
     </body>
 </html>

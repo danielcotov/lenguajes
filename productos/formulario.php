@@ -1,5 +1,8 @@
 <?php
     include '../resources/conexionBD.php';
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     $sql = "BEGIN LISTAR_PRODUCTO(:id, :nombre, :precio, :descripcion, 
                                 :cantidad, :categoria); END;";
     $parse = oci_parse($conn, $sql);
@@ -16,7 +19,7 @@
         if ($_GET['id'] !=null)
         {
             $sqlUpdate = "BEGIN ACTUALIZAR_PRODUCTO(:id, :nombre, :precio, 
-                            :descripcion, :cantidad, :categoria); END;";
+                            :descripcion, :cantidad, :categoria, :usuario); END;";
             $parseUpdate = oci_parse($conn, $sqlUpdate);
             if ($_POST['categoria'] == '0' ){
                 $bindCategoria = $_POST['otra_categoria'];
@@ -25,7 +28,7 @@
                 $bindCategoria = $_POST['categoria'];
             }
             $bindArrayUpdate = array(":id"=>$_GET['id'],":nombre"=>$_POST['nombre'], ":precio"=>$_POST['precio'],
-            ":descripcion"=>$_POST['descripcion'],":cantidad"=>$_POST['cantidad'], ":categoria"=>$bindCategoria);
+            ":descripcion"=>$_POST['descripcion'],":cantidad"=>$_POST['cantidad'], ":categoria"=>$bindCategoria, ":usuario" =>$_SESSION['username']);
             foreach ($bindArrayUpdate as $key => $val) {
                 oci_bind_by_name($parseUpdate, $key, $bindArrayUpdate[$key], 32);
             }
