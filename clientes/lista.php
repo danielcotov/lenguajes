@@ -9,11 +9,6 @@
     oci_execute($parse);
     oci_execute($cur);
 
-    // Cantidad total de Clientes
-    $sqlClientes = "SELECT CANTIDAD_CLIENTES FROM DUAL";
-    $parseClientes = oci_parse($conn, $sqlClientes);
-
-    oci_execute($parseClientes);
 
     if (isset($_GET['id']))
     {
@@ -83,41 +78,7 @@
                         <a href="formulario.php" class="btn btn-success" style="font-size: 1.5rem">Agregar Cliente</a>                    
                     </div>
                     <br>
-                    <div class=row>
-                        <div class="col-md-3">
-                            <div class="box_dashboard">
-                                <h3 class="text-center" style="font-family: 'Bogle'; font-size: 20px;">Cantidad de Clientes</h3>
-                                <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px; font-weight: bold">
-                                <?php
-                                    $row = oci_fetch_object($parseClientes);
-                                    $row->CANTIDAD_CLIENTES;
-                                    echo $row->CANTIDAD_CLIENTES . "<br>\n";
-                                ?>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                    <!--<table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Cantidad Total de Clientes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $row = oci_fetch_object($parseClientes);
-                                $row->CANTIDAD_CLIENTES;
-                                echo '<tr>';
-                                echo '<td>'. $row->CANTIDAD_CLIENTES . "<br>\n";
-                                echo '</tr>';
-                                ?>
-                        </tbody>
-                    </table>-->
-                    <br>
-
-                    <table class="table table-bordered">
+                         <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>ID</th>

@@ -144,6 +144,9 @@
                     <div class="container">
                         <form method="post">
                             <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Reportes</h3>
+                            <?php
+                            include 'cantidades.php';
+                            ?>
                             <hr style="height: 5px; background-color: #007DC6;">
                             <div class="container text-left" style="margin-top: 2%">
                                 <button style="margin:10px 10px 10px 1px;" type="submit" name="btn-PMV" class="btn btn-success" >Productos Más Vendidos</button>
