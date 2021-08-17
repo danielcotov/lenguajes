@@ -2145,6 +2145,15 @@ fieldset:disabled a.btn {
       -webkit-box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5);
       box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5); }
 
+.btn-report{
+  color: #fff;
+  font-size: 16px;
+  background-color: #FFC220;
+  border: none;
+  cursor: pointer;
+  padding: 12px 16px;
+}
+
 .btn-info {
   color: #fff;
   background-color: #17a2b8;
