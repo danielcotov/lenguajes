@@ -1,6 +1,6 @@
 <?php
     include '../resources/conexionBD.php';
-    $sql = "BEGIN LISTAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
+    $sql = "BEGIN LISTAR_EMPLEADO(:id, :nombre, :apellido, :correo, :contrasena,
                                  :telefono, :direccion, :canton, :provincia, :pais, :genero, 
                                  :fecha_nacimiento, :fecha_ingreso, :salario); END;";
     $parse = oci_parse($conn, $sql);
@@ -19,7 +19,7 @@
     {
         if ($_GET['id'] !=null)
         {
-            $sqlUpdate = "BEGIN ACTUALIZAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
+            $sqlUpdate = "BEGIN ACTUALIZAR_EMPLEADO(:id, :nombre, :apellido, :correo, :contrasena,
                                             :telefono, :direccion, :canton, :provincia, :pais, 
                                             :genero, :fecha_nacimiento, :fecha_ingreso,
                                             :salario); END;";
@@ -61,7 +61,7 @@
         }
         else
         {
-            $sqlInsert = "BEGIN INSERTAR_USUARIO(:id, :nombre, :apellido, :correo, :contrasena,
+            $sqlInsert = "BEGIN INSERTAR_EMPLEADO(:id, :nombre, :apellido, :correo, :contrasena,
                                             :telefono, :direccion, :canton, :provincia, :pais, :genero, 
                                             :fecha_nacimiento, :fecha_ingreso, :salario); END;";
             $parseInsert = oci_parse($conn, $sqlInsert);
@@ -187,12 +187,12 @@
                         <label>ID Empleado</label>
                             <input readonly type="text"
                                 value="<?php
-                                    $sqlCount = "BEGIN :result := CANTIDAD_USUARIOS; END;";
+                                    $sqlCount = "BEGIN :result := EMP_SEQ.NEXTVAL; END;";
                                     $parseCount = oci_parse($conn, $sqlCount);
                                     oci_bind_by_name($parseCount, ':result', $result, 32);
                                     
                                     oci_execute($parseCount);
-                                    echo($result + 1);
+                                    echo($result);
                                     oci_free_statement($parseCount);
 
                                 ?>" class="form-control"

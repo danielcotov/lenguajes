@@ -1,7 +1,7 @@
 <?php
     include '../resources/conexionBD.php';
 
-    $sql = "BEGIN LISTAR_USUARIOS(:cur); END;";
+    $sql = "BEGIN LISTAR_EMPLEADOS(:cur); END;";
     $parse = oci_parse($conn, $sql);
     $cur = oci_new_cursor($conn);
     oci_bind_by_name($parse, ':cur', $cur, -1, OCI_B_CURSOR);
@@ -12,7 +12,7 @@
 
     if (isset($_GET['id']))
     {
-        $sqlEliminar = "BEGIN ELIMINAR_USUARIO(:id); END;";
+        $sqlEliminar = "BEGIN ELIMINAR_EMPLEADO(:id); END;";
         $parseEliminar = oci_parse($conn, $sqlEliminar);
         oci_bind_by_name($parseEliminar, ':id', $id, 32);
         $id = $_GET['id'];
@@ -75,7 +75,7 @@
                     <h3 class="text-center" style="font-family: 'Bogle'; font-size: 40px;">Lista de Empleados</h3>
                     <hr style="height: 5px; background-color: #007DC6;">
                     <div class="container text-left" style="margin-top: 2%">
-                        <a href="formulario.php" id="add-employee" class="btn btn-success" style="font-size: 1.5rem">Agregar Usuario</a>  
+                        <a href="formulario.php" id="add-employee" class="btn btn-success" style="font-size: 1.5rem">Agregar Empleado</a>  
                     </div>
                     <br>
                     <table class="table table-bordered">
