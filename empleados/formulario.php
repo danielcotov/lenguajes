@@ -148,7 +148,7 @@
                             <a href="../clientes/lista.php"><span class="fa fa-users mr-3"></span> Clientes</a>
                         </li>
                         <li>
-                            <a href="../reportes/lista.php"><span class="fa fa-file-text mr-3"></span> Reportes</a>
+                            <a href="../reportes/lista.php"><span class="fa fa-file-text mr-3"></span> Administración</a>
                         </li>
                     </ul>
                     <div class="footer">
