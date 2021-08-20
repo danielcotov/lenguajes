@@ -33,7 +33,7 @@
                         <a href="clientes/lista.php"><span class="fa fa-users mr-3"></span> Clientes</a>
                     </li>
                     <li>
-                        <a href="reportes/lista.php"><span class="fa fa-file-text mr-3"></span> Admin</a>
+                        <a href="reportes/lista.php"><span class="fa fa-file-text mr-3"></span> Administración</a>
                     </li>
                 </ul>
                 <div class="footer">
@@ -64,7 +64,7 @@
                                 <img src="resources/images/customer.png" alt="Employee" class="image" style="vertical-align: middle"/>
                                 <div class="middle" style="top: 115%; left: 50%;">
                                     <div> 
-                                        <a href="empleados/lista.php" class="btn btn-success big-btn" style="font-size: 2rem">Clientes</a>
+                                        <a href="clientes/lista.php" class="btn btn-success big-btn" style="font-size: 2rem">Clientes</a>
                                     </div>                       
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                                 <img src="resources/images/product.png" alt="Employee" class="image"/>
                                 <div class="middle" style="  top: 115%; left: 50%;">
                                     <div> 
-                                        <a href="empleados/lista.php" class="btn btn-success big-btn" style="font-size: 2rem">Productos</a>
+                                        <a href="productos/lista.php" class="btn btn-success big-btn" style="font-size: 2rem">Productos</a>
                                     </div>                       
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                 <img src="resources/images/report.png" alt="Employee" class="image"/>
                                 <div class="middle" style="top: 115%; left: 50%;">
                                     <div> 
-                                        <a href="empleados/lista.php" class="btn btn-success big-btn" style="font-size: 2rem">Admin</a>
+                                        <a href="reportes/lista.php" class="btn btn-success big-btn" style="font-size: 2rem">Admin</a>
                                     </div>                       
                                 </div>
                             </div>
