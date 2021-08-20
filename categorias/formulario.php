@@ -127,12 +127,12 @@
                                     <label>ID Categoria</label>
                                     <input readonly type="text"
                                            value="<?php
-                                        $sqlCount = "BEGIN :result := CANTIDAD_CATEGORIAS; END;";
+                                        $sqlCount = "BEGIN :result := CATE_SEQ.NEXTVAL; END;";
                                         $parseCount = oci_parse($conn, $sqlCount);
                                         oci_bind_by_name($parseCount, ':result', $result, 32);
                                         
                                         oci_execute($parseCount);
-                                        echo($result + 1);
+                                        echo($result);
                                         oci_free_statement($parseCount);
 
                                     ?>" class="form-control"
